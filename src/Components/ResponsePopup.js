@@ -1,6 +1,38 @@
 import React, { Component } from 'react'
 
 class ResponsePopup extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            buildLevel: 0,
+            buildPrice: 0
+        }
+
+        this.handleChangeBuildSelect = this.handleChangeBuildSelect.bind(this);
+        this.handleBuildSubmit = this.handleBuildSubmit.bind(this);
+    }
+
+    handleChangeBuildSelect(event) {
+        const target = event.target;
+        const value = target.value;
+        const price = target.options[value - 1].getAttribute('price');
+
+        this.setState({
+            buildLevel: value,
+            buildPrice: price
+        });
+    }
+
+    handleBuildSubmit(e) {
+        e.preventDefault();
+        this.props.handleBuild();
+
+        this.setState({
+            buildLevel: 0,
+            buildPrice: 0
+        });
+    }
+
     render() {
         var popup = this.props.popup;
         var field = popup.field;
@@ -20,20 +52,20 @@ class ResponsePopup extends Component {
                 var payment = 0;
 
                 if (typeof field != 'undefined') {
-                    var price = field.price;
+                    var payprice = field.price;
 
                     if (field.house == null && field.hotel == null) {
-                        payment = price / 10;
-                    } else if (field.house == 1) {
-                        payment = price / 2;
-                    } else if (field.house == 2) {
-                        payment = price * 1.25;
-                    } else if (field.house == 3) {
-                        payment = price * 2.5;
-                    } else if (field.house == 4) {
-                        payment = price * 4;
-                    } else if (field.hotel == 1) {
-                        payment = price * 5;
+                        payment = payprice / 10;
+                    } else if (field.house === 1) {
+                        payment = payprice / 2;
+                    } else if (field.house === 2) {
+                        payment = payprice * 1.25;
+                    } else if (field.house === 3) {
+                        payment = payprice * 2.5;
+                    } else if (field.house === 4) {
+                        payment = payprice * 4;
+                    } else if (field.hotel === 1) {
+                        payment = payprice * 5;
                     }
                 }
                 return (
@@ -49,35 +81,46 @@ class ResponsePopup extends Component {
             case 'BUILD':
                 var house = field.house;
                 var hotel = field.hotel;
+                var buildPrice = field.price;
                 var level = 0;
                 if (hotel != null) {
                     level = 5;
                 } else if (house != null) {
                     level = house;
                 }
-
                 var options = [];
-                options.push({ level: 1, name: "Domek" });
-                options.push({ level: 2, name: "Domek" });
-                options.push({ level: 3, name: "Domek" });
-                options.push({ level: 4, name: "Domek" });
+                options.push({ level: 1, name: "1 Domek" });
+                options.push({ level: 2, name: "2 Domki" });
+                options.push({ level: 3, name: "3 Domki" });
+                options.push({ level: 4, name: "4 Domki" });
                 options.push({ level: 5, name: "Hotel" });
-                console.log(options)
                 options.splice(0, level);
-                console.log(options)
+
+                // if (options.length > 0) {
+                //     this.setState({
+                //         buildLevel: options[0].level,
+                //         buildPrice: buildPrice / 2
+                //     });
+                // }
 
                 return (
                     <div className='popup'>
                         <div className='popupContent'>
-                            <p>
-                                Czy chcesz rozbudować ulicę?
-                            </p>
-                            <select>
-                                {options.map((opt) =>
-                                    <option value={opt.level}>{opt.name} za {price/2 * (opt.level - level)}</option>
-                                )}
-                            </select>
-                            <button onClick={this.props.handleBuild}>ok</button>
+                            <form onSubmit={this.handleBuildSubmit}>
+                                <p>Możesz rozbudować ulicę do poziomu:</p>
+                                <select onChange={this.handleChangeBuildSelect}>
+                                    {options.map((opt) =>
+                                        <option
+                                            key={opt.level}
+                                            value={opt.level}
+                                            price={buildPrice / 2 * (opt.level - level)}>
+                                            {opt.name} za {buildPrice / 2 * (opt.level - level)} zł
+                                        </option>
+                                    )}
+                                </select>
+                                <button>ok</button>
+                            </form>
+                            <button onClick={this.props.endTurn}>Nie, rezygnuję</button>
                         </div>
                     </div>
                 )

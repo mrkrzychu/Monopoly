@@ -21,6 +21,8 @@ class Board extends Component {
         this.handleBuy = this.handleBuy.bind(this);
         this.handlePay = this.handlePay.bind(this);
         this.handleNewPlayer = this.handleNewPlayer.bind(this);
+        this.handleBuild = this.handleBuild.bind(this);
+
         this.endTurn = this.endTurn.bind(this);
         this.boardService = new BoardService();
 
@@ -138,6 +140,10 @@ class Board extends Component {
         });
     }
 
+    handleBuild() {
+        console.log('board handle build')
+    }
+
     endTurn() {
         this.setState({
             popup: {},
@@ -197,6 +203,14 @@ class Board extends Component {
                                 <h2 className="label">Szansa</h2>
                                 <div className="deck"></div>
                             </div>
+                            <div className = "moveButton">
+                                <form onSubmit={this.handleMove}>
+                                    <button className="btn btn-warning" >wykonaj ruch</button>
+                                </form>
+                                <h6 className="text-center">
+                                    tura gracza: {this.state.currplayer}
+                                </h6>
+                            </div>
                         </div>
                         <div className="space corner go">
                             <Field item={start} />
@@ -230,15 +244,15 @@ class Board extends Component {
                                 <Field item={item} key={item.id} players={players} />
                             )}
                         </div>
-                        <form onSubmit={this.handleMove}>
-                            <button className="btn btn-warning" >wykonaj ruch</button>
-                        </form>
-                        <h6 className="text-center">
-                            tura gracza: {this.state.currplayer}
-                        </h6>
                     </div>
                     <Players players={this.state.players} handleNewPlayer={this.handleNewPlayer} />
-                    <ResponsePopup popup={this.state.popup} handleBuy={this.handleBuy} endTurn={this.endTurn} handlePay={this.handlePay} />
+                    <ResponsePopup
+                        popup={this.state.popup}
+                        handleBuy={this.handleBuy}
+                        endTurn={this.endTurn}
+                        handlePay={this.handlePay}
+                        handleBuild={this.handleBuild}
+                    />
 
                 </div>
             )

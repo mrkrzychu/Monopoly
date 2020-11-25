@@ -4,6 +4,7 @@ export default class BoardService {
         this.BUY_URL = "http://localhost:3000/buy";
         this.PAY_URL = "http://localhost:3000/pay";
         this.NEWPLAYER_URL = "http://localhost:3000/newplayer";
+        this.BUILD_URL = "http://localhost:3000/build";
     }
 
     async move(player, value) {

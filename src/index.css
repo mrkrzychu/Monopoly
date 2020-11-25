@@ -67,6 +67,11 @@ body {
 	margin-left: 60px;
 }
 
+.moveButton {
+	grid-column: 1 / 5;
+	grid-row: 6 / 7;
+}
+
 .label {
 	text-align: center;
 	font-weight: 500;
@@ -227,7 +232,7 @@ body {
 	height: 15px;
 }
 
-.playerHeader > .playerIcon {
+.playerHeader>.playerIcon {
 	width: 13px;
 	height: 13px;
 	border-radius: 13px;
