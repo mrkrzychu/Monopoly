@@ -45,7 +45,7 @@ app.get('/getBoard', (req, res) => {
         }
         fields[pl.position].players.push(pl);
       }
-      console.log('B')
+
       var board = { "fields": fields, "players": players };
 
       res.send(board);
@@ -54,14 +54,22 @@ app.get('/getBoard', (req, res) => {
 });
 
 //add player
-app.post('/addPlayer', (req, res) => {
-  let post = { name: 'Monika', cash: 1000, color_player: '#ebff23', position: 0 };
-  let sql = 'INSERT INTO player SET ?';
-  let query = db.query(sql, post, (err, result) => {
+app.post('/newplayer', (req, res) => {
+  const params = req.body;
+
+  let selectSql = 'select max(id) as maxid from player';
+  let selectQuery = db.query(selectSql, (err, selectResult) => {
     if (err) throw err;
-    console.log(result);
-    res.send('Player added');
-  })
+
+    var nextId = selectResult[0].maxid + 1;
+    let sqlParams = { id: nextId, name: params.name, cash: 1000, color_player: params.color, position: 0 };
+    let sql = 'INSERT INTO player SET ?';
+    let query = db.query(sql, sqlParams, (err, result) => {
+      if (err) throw err;
+
+      res.send(sqlParams);
+    });
+  });
 });
 
 // update record "move"
@@ -100,9 +108,7 @@ app.post('/move', (req, res) => {
     ////////////////////////////////////////
     // zawsze wskakuje na pole do zaplaty
     if (player == 0) {
-      newPosition = 21;
-    } else {
-      newPosition = 8;
+      newPosition = 23;
     }
     ////////////////////////////////////////
 
@@ -122,9 +128,13 @@ app.post('/move', (req, res) => {
           ret.todo.action = "BUY";
           ret.todo.field = field;
           //moze tutaj wrzucic pola do zaplaty id 4 i 38
-        } else if (field.owner != player) {
+        } else if (field.owner != null && field.owner != player) {
           ret.todo = {};
           ret.todo.action = "PAY";
+          ret.todo.field = field;
+        } else if (field.owner == player) {
+          ret.todo = {};
+          ret.todo.action = "BUILD";
           ret.todo.field = field;
         }
         res.send(ret);
@@ -179,7 +189,7 @@ app.post('/pay', (req, res) => {
   }
 
   var payment = 0;
-  if (field.house == 0) {
+  if (field.house == null && field.hotel == null) {
     payment = price / 10;
   } else if (field.house == 1) {
     payment = price / 2;

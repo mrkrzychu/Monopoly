@@ -13,7 +13,6 @@ class Board extends Component {
             isLoaded: false,
             fields: [],
             players: [],
-            allplayers: 2, //zmienic
             currplayer: 0,
             popup: {}
         }
@@ -21,6 +20,7 @@ class Board extends Component {
         this.handleMove = this.handleMove.bind(this);
         this.handleBuy = this.handleBuy.bind(this);
         this.handlePay = this.handlePay.bind(this);
+        this.handleNewPlayer = this.handleNewPlayer.bind(this);
         this.endTurn = this.endTurn.bind(this);
         this.boardService = new BoardService();
 
@@ -76,9 +76,6 @@ class Board extends Component {
     }
 
     handleBuy() {
-        this.setState({
-            popup: {}
-        });
         var field_id = this.state.players[this.state.currplayer].position;
         var price = this.state.fields[field_id].price;
         var cash = this.state.players[this.state.currplayer].cash;
@@ -98,26 +95,53 @@ class Board extends Component {
     }
 
     handlePay() {
-        this.setState({
-            popup: {}
-        });
-        var field_id = this.state.players[this.state.currplayer].position;
-        var field = this.state.fields[field_id];
-        var price = this.state.fields[field_id].price;
-        var payer = this.state.players[this.state.currplayer].id;
-        var recipient = this.state.fields[field_id].owner;
-        var payerCash = this.state.players[payer].cash;
-        var recipientCash = this.state.players[recipient].cash;
+        var players = this.state.players;
+        var fields = this.state.fields;
+
+        var field_id = players[this.state.currplayer].position;
+        var field = fields[field_id];
+        var price = fields[field_id].price;
+        var payer = players[this.state.currplayer].id;
+        var recipient = fields[field_id].owner;
+        var payerCash = players[payer].cash;
+        var recipientCash = players[recipient].cash;
 
         this.boardService.pay(field, price, payer, payerCash, recipient, recipientCash).then((res) => {
-            console.log(res)
+
+            players[payer].cash = res.payerCash;
+            players[recipient].cash = res.recipientCash;
+
+            this.setState({
+                players: players
+            });
+
+            this.endTurn();
+        });
+    }
+
+
+    handleNewPlayer(name, color) {
+        this.boardService.newPlayer(name, color).then((res) => {
+            var players = this.state.players;
+            var fields = this.state.fields;
+            players.push(res);
+
+            if (typeof fields[0].players == 'undefined') {
+                fields[0].players = [];
+            }
+            fields[0].players.push(res);
+
+            this.setState({
+                fields: fields,
+                players: players
+            });
         });
     }
 
     endTurn() {
         this.setState({
             popup: {},
-            currplayer: (this.state.currplayer + 1) % this.state.allplayers
+            currplayer: (this.state.currplayer + 1) % this.state.players.length
         });
     }
 
@@ -213,7 +237,7 @@ class Board extends Component {
                             tura gracza: {this.state.currplayer}
                         </h6>
                     </div>
-                    <Players players={this.state.players} />
+                    <Players players={this.state.players} handleNewPlayer={this.handleNewPlayer} />
                     <ResponsePopup popup={this.state.popup} handleBuy={this.handleBuy} endTurn={this.endTurn} handlePay={this.handlePay} />
 
                 </div>

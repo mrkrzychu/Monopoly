@@ -1,8 +1,9 @@
 export default class BoardService {
     constructor() {
-        this.MOVE_URL = "http://localhost:3000/move"
-        this.BUY_URL = "http://localhost:3000/buy"
-        this.PAY_URL = "http://localhost:3000/pay"
+        this.MOVE_URL = "http://localhost:3000/move";
+        this.BUY_URL = "http://localhost:3000/buy";
+        this.PAY_URL = "http://localhost:3000/pay";
+        this.NEWPLAYER_URL = "http://localhost:3000/newplayer";
     }
 
     async move(player, value) {
@@ -18,6 +19,11 @@ export default class BoardService {
     async pay(field, price, payer, payerCash, recipient, recipientCash) {
         var params = { field, price, payer, payerCash, recipient, recipientCash };
         return this.fetchRequest(params, this.PAY_URL);
+    }
+
+    async newPlayer(name, color) {
+        var params = {name, color};
+        return this.fetchRequest(params, this.NEWPLAYER_URL);
     }
 
     async fetchRequest(params, url) {
