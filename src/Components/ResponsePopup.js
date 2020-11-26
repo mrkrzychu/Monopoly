@@ -36,6 +36,7 @@ class ResponsePopup extends Component {
     render() {
         var popup = this.props.popup;
         var field = popup.field;
+        var card = this.props.card;
 
         switch (popup.action) {
             case 'BUY':
@@ -124,6 +125,52 @@ class ResponsePopup extends Component {
                         </div>
                     </div>
                 )
+            case 'CARD':
+                var fieldName = field.name;
+                var chanceCard = card.slice(0, 14);
+                var cashCard = card.slice(14, 28);
+                var number = Math.floor(Math.random() * 14); //czy to jest dobrze ??!?!?!?!!?!?!?!!??!!?!!??!!??!?!?!
+                var cardName = "";
+                //var cardId;
+
+                console.log(number);
+                if (fieldName === "SZANSA") {
+                    cardName = chanceCard[number].text;
+                    //cardId = chanceCard[number].id;
+
+                    return (
+                        <div className='popup'>
+                            <div className='popupContent'>
+                                <div>
+                                    {fieldName}
+                                </div>
+                                <div>
+                                    {cardName}
+                                </div>
+                                <button onClick={this.props.endTurn}>ok</button>
+                            </div>
+                        </div>
+                    )
+                } else {
+                    cardName = cashCard[number].text;
+                    //cardId = chanceCard[number].id;
+
+                    return (
+                        <div className='popup'>
+                            <div className='popupContent'>
+                                <div>
+                                    {fieldName}
+                                </div>
+                                <div>
+                                    {cardName}
+                                </div>
+                                <button onClick={this.props.endTurn}>ok</button>
+                            </div>
+                        </div>
+                    )
+                }
+
+
             default:
                 return null;
         }

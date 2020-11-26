@@ -13,6 +13,7 @@ class Board extends Component {
             isLoaded: false,
             fields: [],
             players: [],
+            cards: [],
             currplayer: 0,
             popup: {}
         }
@@ -41,7 +42,6 @@ class Board extends Component {
             var fields = this.state.fields;
             var players = this.state.players;
             var pl;
-
             players[this.state.currplayer].cash = newCash;
 
             if (fields[old].players.length === 1) {
@@ -159,6 +159,7 @@ class Board extends Component {
                     this.setState({
                         fields: result.fields,
                         players: result.players,
+                        cards: result.cards,
                         isLoaded: true
                     });
                 },
@@ -203,7 +204,7 @@ class Board extends Component {
                                 <h2 className="label">Szansa</h2>
                                 <div className="deck"></div>
                             </div>
-                            <div className = "moveButton">
+                            <div className="moveButton">
                                 <form onSubmit={this.handleMove}>
                                     <button className="btn btn-warning" >wykonaj ruch</button>
                                 </form>
@@ -214,6 +215,7 @@ class Board extends Component {
                         </div>
                         <div className="space corner go">
                             <Field item={start} />
+                            Przechodząc przez start dostajesz 200zł
                         </div>
                         <div className="boardRow horizontal-row bottom-row">
                             {bottom.map((item) =>
@@ -252,8 +254,8 @@ class Board extends Component {
                         endTurn={this.endTurn}
                         handlePay={this.handlePay}
                         handleBuild={this.handleBuild}
+                        card={this.state.cards}
                     />
-
                 </div>
             )
         }

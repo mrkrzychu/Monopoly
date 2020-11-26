@@ -8,6 +8,12 @@ class Field extends Component {
     const item = this.props.item;
     const players = this.props.players;
     const color = this.props.item.color;
+    const hotel = item.hotel;
+    const house = item.house;
+    const houses = [];
+    for (var i = 1; i <= house; i++) {
+      houses.push(icons.home)
+    }
 
     return (
       <div className="space property">
@@ -17,14 +23,14 @@ class Field extends Component {
             {item.name}
           </div>
           <div className='housePlaceholder'>
-            {item.house > 0 &&
-              <h6>
-                {icons.home + ": " + item.house}
-              </h6>
-            }
-            {item.hotel === 1 &&
+            {hotel === 1 &&
               <h6>
                 {icons.homes}
+              </h6>
+            }
+            {house > 0 && hotel !== 1 &&
+              <h6>
+                {houses}
               </h6>
             }
           </div>
@@ -39,7 +45,7 @@ class Field extends Component {
           </div>
           {(typeof item.price == 'number') && (
             <div key={item.price}>
-              cena: {item.price}
+              cena: {item.price + " "} zł
             </div>
           )}
           <div>

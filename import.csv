@@ -1,40 +1,28 @@
-0;NULL;NULL;NULL;NULL;NULL;START
-1;60;NULL;NULL;NULL;584e4e;ULICA KONOPACKA
-2;NULL;NULL;NULL;NULL;NULL;KASA SPOLECZNA
-3;60;NULL;NULL;NULL;584e4e;ULICA STALOWA
-4;200;NULL;NULL;NULL;NULL;PODATEK DOCHODOWY
-5;200;NULL;NULL;NULL;NULL;DWORZEC ZACHODNI
-6;100;NULL;NULL;NULL;359bf5;ULICA RADZYMINSKA
-7;NULL;NULL;NULL;NULL;NULL;SZANSA
-8;100;NULL;NULL;NULL;359bf5;ULICA JAGIELLONSKA
-9;120;NULL;NULL;NULL;359bf5;ULICA TARGOWA
-10;NULL;NULL;NULL;NULL;NULL;WIEZIENIE
-11;140;NULL;NULL;NULL;f319e2;ULICA PLOWIECKA
-12;150;NULL;NULL;NULL;NULL;ELEKTROWNIA
-13;140;NULL;NULL;NULL;f319e2;ULICA MARSA
-14;160;NULL;NULL;NULL;f319e2;ULICA GROCHOWSKA
-15;200;NULL;NULL;NULL;NULL;DWORZEC GDANSKI
-16;180;NULL;NULL;NULL;ff9217;ULICA OBOZOWA
-17;NULL;NULL;NULL;NULL;NULL;SZANSA
-18;180;NULL;NULL;NULL;ff9217;ULICA GORCZEWSKA
-19;200;NULL;NULL;NULL;ff9217;ULICA WOLSKA
-20;NULL;NULL;NULL;NULL;NULL;PARKING
-21;220;NULL;NULL;NULL;ff0000;ULICA MICKIEWICZA
-22;NULL;NULL;NULL;NULL;NULL;SZANSA
-23;220;NULL;NULL;NULL;ff0000;ULICA SLOWACKIEGO
-24;240;NULL;NULL;NULL;ff0000;PLAC WILSONA
-25;200;NULL;NULL;NULL;NULL;DWORZEC WSCHODNI
-26;260;NULL;NULL;NULL;f7ff00;ULICA SWIETOKRZYSKA
-27;2600;NULL;NULL;NULL;f7ff00;KRAKOWSKIE PRZEDMIESCIE
-28;100;NULL;NULL;NULL;NULL;WODOCIAGI
-29;280;NULL;NULL;NULL;f7ff00;NOWY SWIAT
-30;NULL;NULL;NULL;NULL;NULL;IDŹ DO WIEZIENIA
-31;300;NULL;NULL;NULL;2f6604;PLAC TRZECH KRZYZY
-32;300;NULL;NULL;NULL;2f6604;ULICA MARSZALKOWSKA
-33;NULL;NULL;NULL;NULL;NULL;KASA SPOLECZNA
-34;320;NULL;NULL;NULL;2f6604;ALEJE JEROZOLIMSKIE
-35;200;NULL;NULL;NULL;NULL;DWORZEC CENTRALNY
-36;NULL;NULL;NULL;NULL;NULL;SZANSA
-37;350;NULL;NULL;NULL;0627dc;ULICA BELWEDERSKA
-38;100;NULL;NULL;NULL;NULL;DOMIAR PODATKOWY
-39;400;NULL;NULL;NULL;0627dc;ALEJE UJAZDOWSKIE
+﻿0;szansa;Idż na ulice płowiecką jeśli przejdziesz przez START pobierz 200zł;11;null;null
+1;szansa;Idź na Dworzec Zachodni. Jeśli przejdziesz przez START pobierz 200zł;5;null;null
+2;szansa;Zrobiłeś błąd w kalkulacjach podatkowych. Zapłać każdemu graczowi 50zł;null;null;-50
+3;szansa;Idź na  Dworzec Centralny. Jeśli nie jest zajęty możesz go kupić od banku. Jeśli jest już zajęty zapłać właścicielowi odpowiednią sumę.;35;null;null
+4;szansa;Idź na  Dworzec Wchodni. Jeśli nie jest zajęty możesz go kupić od banku. Jeśli jest już zajęty zapłać właścicielowi odpowiednią sumę.;25;null;null
+5;szansa;Idź do Elektrowni.Jeśli nie jest zajęta możesz ją kupić od banku. Jeśli jest już zajęta rzuć kostką jeszcze raz i zapłać właścicielowi odpowiednią sumę.;12;null;null
+6;szansa;Idź do więzienia. Nie przechodź przez START. Nie pobieraj 200zł;10;null;null
+7;szansa;Idź na Plac Wilson. Jeśli przejdziesz przez START pobierz  200zł;24;null;null
+8;szansa;Bank wypłaca Ci dywidwndę. Pobierz 50zł;null;50;null
+9;szansa;Zwrot podatku.Pobierz  150zł;null;150;null
+10;szansa;Przejdź na START. Pobierz 200zł;0;null;null
+11;szansa;Zapłać grzywne w wysokości 15zł;null;-15;null
+12;szansa;Cofnij się o trzy pola.;-3;null;null
+13;szansa;Idź na Aleje Ujazdowskie;39;null;null
+14;kasa;Zająłeś 2 miejsce w konkursie piękności. Pobierz 10zł;null;10;null
+15;kasa;Błąd bankowy na twoim koncie! Pobierz 200zł;null;200;null
+16;kasa;Idź do więzienia. Nie przechodź przez START. Nie pobieraj 200zł;10;null;null
+17;kasa;Masz urodziny! Pobierz 10zł od każdego gracza.;null;null;10
+18;kasa;Fundusz Zdrowotny. Pobierz 100zł;null;100;null
+19;kasa;Zapłać za wizytę u dentysty 100zł;null;-100;null
+20;kasa;Zapłać czesne 50zł;null;-50;null
+21;kasa;Przejdź na START ( Pobierz 200zł);0;null;null
+22;kasa;Wyprzedaż! Pobierz M 50;null;50;null
+23;kasa;Zapłać za wizytę Lekarską 50zł;null;-50;null
+24;kasa;Zwrot podatku. Pobierz 20zł;null;20;null
+25;kasa;Otrzymujesz 25zł za porady finansowe;null;25;null
+26;kasa;Odziedziczyłeś spadek. Pobierz 100zł;null;100;null
+27;kasa;Dostałeś premię! Pobierz 100zł;null;100;null

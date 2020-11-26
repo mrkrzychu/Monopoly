@@ -31,7 +31,7 @@ app.get('/1', (req, res) => {
   res.send(123);
 });
 
-// select records
+// get board
 app.get('/getBoard', (req, res) => {
   let sqlBoard = 'SELECT * FROM board';
   let queryBoard = db.query(sqlBoard, (errB, fields) => {
@@ -39,21 +39,26 @@ app.get('/getBoard', (req, res) => {
     let sqlPlayer = 'SELECT * FROM player';
     let queryPlayer = db.query(sqlPlayer, (errP, players) => {
       if (errP) throw errP;
-      for (var pl of players) {
-        if (typeof fields[pl.position].players == 'undefined') {
-          fields[pl.position].players = [];
+      let sqlCard = 'SELECT * FROM card';
+      let queryCard = db.query(sqlCard, (errC, cards) => {
+        if (errC) throw errC;
+        for (var pl of players) {
+          if (typeof fields[pl.position].players == 'undefined') {
+            fields[pl.position].players = [];
+          }
+          fields[pl.position].players.push(pl);
         }
-        fields[pl.position].players.push(pl);
-      }
 
-      var board = { "fields": fields, "players": players };
+        var board = { "fields": fields, "players": players, "cards": cards };
+        console.log(board)
 
-      res.send(board);
+        res.send(board);
+      });
     });
   });
 });
 
-//add player
+//new player
 app.post('/newplayer', (req, res) => {
   const params = req.body;
 
@@ -87,7 +92,7 @@ app.post('/move', (req, res) => {
   let queryPlayer = db.query(sqlPlayer, (errP, resultsPlayer) => {
     if (errP) throw errP;
 
-    const curPosition = resultsPlayer[0].position; //select position from player where id = $player
+    const curPosition = resultsPlayer[0].position;
     var newPosition = (curPosition + move) % 40;
     var newCash = resultsPlayer[0].cash;
 
@@ -108,7 +113,7 @@ app.post('/move', (req, res) => {
     ////////////////////////////////////////
     // zawsze wskakuje na pole do zaplaty
     if (player == 0) {
-      newPosition = 23;
+      newPosition = 7;
     }
     ////////////////////////////////////////
 
@@ -135,6 +140,10 @@ app.post('/move', (req, res) => {
         } else if (field.owner == player) {
           ret.todo = {};
           ret.todo.action = "BUILD";
+          ret.todo.field = field;
+        } else if (newPosition == 2 || newPosition == 7 || newPosition == 17 || newPosition == 22 || newPosition == 33 || newPosition == 36) {
+          ret.todo = {};
+          ret.todo.action = "CARD";
           ret.todo.field = field;
         }
         res.send(ret);
