@@ -1,2 +1,2 @@
 # Monopoly
-basic monopoly game with React.js
+Monopoly game with React.js
