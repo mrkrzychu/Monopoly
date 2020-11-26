@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Field from './Field';
 import Players from './Players';
 import ResponsePopup from './ResponsePopup';
-import BoardService from './BoardService'
+import BoardService from './BoardService';
 
 
 class Board extends Component {
@@ -15,18 +15,60 @@ class Board extends Component {
             players: [],
             cards: [],
             currplayer: 0,
-            popup: {}
+            popup: {},
+            dices: [],
+            activePlayers: 0
         }
 
         this.handleMove = this.handleMove.bind(this);
+        this.movePlayer = this.movePlayer.bind(this);
         this.handleBuy = this.handleBuy.bind(this);
         this.handlePay = this.handlePay.bind(this);
         this.handleNewPlayer = this.handleNewPlayer.bind(this);
         this.handleBuild = this.handleBuild.bind(this);
+        this.handleCard = this.handleCard.bind(this);
 
         this.endTurn = this.endTurn.bind(this);
+        this.newGame = this.newGame.bind(this);
         this.boardService = new BoardService();
 
+    }
+
+    updateFieldsPlayersState(fields, players) {
+        for (var i = 0; i < players.length; i++) {
+            var pl = players[i];
+
+            if (pl.cash < 0 && pl.lost !== 1) {
+                pl.lost = 1;
+
+                this.setState({
+                    activePlayers: this.state.activePlayers - 1
+                });
+
+                if (fields[pl.position].players.length === 1) {
+                    fields[pl.position].players = undefined;
+                } else {
+                    fields[pl.position].players.splice(i, 1);
+                }
+
+                for (let j = 0; j < fields.length; j++) {
+                    var field = fields[j];
+
+                    if (field.owner === pl.id) {
+                        field.owner = null;
+                        field.house = null;
+                        field.hotel = null;
+                    }
+                }
+                this.boardService.bancrupt(pl.id);
+            }
+        }
+
+
+        this.setState({
+            fields: fields,
+            players: players
+        });
     }
 
     handleMove(e) {
@@ -34,7 +76,17 @@ class Board extends Component {
 
         var a = Math.floor(Math.random() * 6) + 1;
         var b = Math.floor(Math.random() * 6) + 1;
+
+        this.setState({
+            dices: [a, b]
+        })
+
         var move = (a + b) % 40;
+
+        this.movePlayer(move);
+    }
+
+    movePlayer(move) {
         this.boardService.move(this.state.currplayer, move).then((res) => {
             var old = res.old;
             var neww = res.new;
@@ -62,10 +114,7 @@ class Board extends Component {
 
             players[this.state.currplayer].position = neww;
 
-            this.setState({
-                fields: fields,
-                players: players
-            });
+            this.updateFieldsPlayersState(fields, players);
 
             if (typeof res.todo != 'undefined') {
                 this.setState({
@@ -88,10 +137,7 @@ class Board extends Component {
             var players = this.state.players;
             fields[field_id].owner = this.state.currplayer;
             players[this.state.currplayer].cash = cash;
-            this.setState({
-                fields: fields,
-                players: players
-            });
+            this.updateFieldsPlayersState(fields, players);
             this.endTurn();
         });
     }
@@ -113,9 +159,7 @@ class Board extends Component {
             players[payer].cash = res.payerCash;
             players[recipient].cash = res.recipientCash;
 
-            this.setState({
-                players: players
-            });
+            this.updateFieldsPlayersState(fields, players);
 
             this.endTurn();
         });
@@ -133,25 +177,127 @@ class Board extends Component {
             }
             fields[0].players.push(res);
 
+            this.updateFieldsPlayersState(fields, players);
+
             this.setState({
-                fields: fields,
-                players: players
+                activePlayers: this.state.activePlayers + 1
             });
         });
     }
 
-    handleBuild() {
-        console.log('board handle build')
+    handleCard(card) {
+        var players = this.state.players;
+        var pl = players[this.state.currplayer]
+
+        if (card.goto !== null) {
+            var move;
+            if (card.goto >= 0) {
+                var curPosition = this.state.players[this.state.currplayer].position;
+                move = (card.goto - curPosition + 40) % 40;
+            } else {
+                move = card.goto;
+            }
+            this.movePlayer(move);
+
+        } else if (card.balance !== null) {
+            this.boardService.balance(pl.id, pl.cash, card.balance).then((res) => {
+                var newCash = res.cash;
+                pl.cash = newCash;
+                this.updateFieldsPlayersState(this.state.fields, players);
+            });
+            this.endTurn();
+
+        } else if (card.balanceEach !== null) {
+            var myBalance = card.balanceEach * (players.length - 1);
+
+            this.boardService.balance(pl.id, pl.cash, myBalance).then((res) => {
+                var newCash = res.cash;
+                pl.cash = newCash;
+                this.updateFieldsPlayersState(this.state.fields, players);
+            });
+
+            players.map((pl) => {
+                if (pl.id === this.state.currplayer) {
+                    return false;
+                }
+
+                this.boardService.balance(pl.id, pl.cash, card.balanceEach * (-1)).then((res) => {
+                    var newCash = res.cash;
+                    pl.cash = newCash;
+                    this.updateFieldsPlayersState(this.state.fields, players);
+                });
+                return true;
+            });
+
+            this.endTurn();
+        } else {
+            window.alert("something went wrong");
+            this.endTurn();
+        }
+    }
+
+    handleBuild(level, price, field_id) {
+        var fields = this.state.fields;
+        var field = fields[field_id];
+
+        if (level === 5) {
+            field.house = null;
+            field.hotel = 1;
+        } else {
+            field.house = level;
+        }
+
+        var players = this.state.players;
+        var pl = players[this.state.currplayer];
+        pl.cash -= price;
+
+        this.boardService.build(this.state.currplayer, pl.cash, field_id, level).then((res) => {
+            this.updateFieldsPlayersState(fields, players);
+        });
+
+        this.endTurn();
     }
 
     endTurn() {
+        var nextPlayer = (this.state.currplayer + 1) % this.state.players.length;
+        while (this.state.players[nextPlayer].lost === 1) {
+            nextPlayer = (nextPlayer + 1) % this.state.players.length;
+        }
+
+        console.log(this.state.activePlayers)
+        if (this.state.activePlayers === 1) {
+            window.alert('WYGRAL GRACZ ' + nextPlayer)
+            return;
+        }
+
         this.setState({
             popup: {},
-            currplayer: (this.state.currplayer + 1) % this.state.players.length
+            currplayer: nextPlayer
+        });
+    }
+
+    newGame() {
+        this.boardService.newGame().then((res) => {
+            this.setState({
+                error: null,
+                isLoaded: false,
+                fields: [],
+                players: [],
+                cards: [],
+                currplayer: 0,
+                popup: {},
+                dices: [],
+                activePlayers: 0
+            });
+            this.getBoard();
         });
     }
 
     componentDidMount() {
+        this.getBoard();
+    }
+
+    getBoard() {
         fetch("http://localhost:3000/getBoard")
             .then(response => response.json())
             .then(
@@ -160,6 +306,7 @@ class Board extends Component {
                         fields: result.fields,
                         players: result.players,
                         cards: result.cards,
+                        activePlayers: result.players.length,
                         isLoaded: true
                     });
                 },
@@ -193,6 +340,11 @@ class Board extends Component {
 
             return (
                 <div className='table'>
+                    <div className='row'>
+                        <div className='col-1 offset-11'>
+                            <button className='btn btn-danger m-1' onClick={this.newGame}>Nowa gra</button>
+                        </div>
+                    </div>
                     <div className='board'>
                         <div className="center">
                             <div className="community-chest-deck">
@@ -211,6 +363,11 @@ class Board extends Component {
                                 <h6 className="text-center">
                                     tura gracza: {this.state.currplayer}
                                 </h6>
+                            </div>
+                            <div className="dices">
+                                <h5>Rzut&nbsp;kośćmi:</h5>
+                                <div key='dice1'><h3>{this.state.dices[0]}</h3></div>
+                                <div key='dice2'><h3>{this.state.dices[1]}</h3></div>
                             </div>
                         </div>
                         <div className="space corner go">
@@ -254,7 +411,8 @@ class Board extends Component {
                         endTurn={this.endTurn}
                         handlePay={this.handlePay}
                         handleBuild={this.handleBuild}
-                        card={this.state.cards}
+                        cards={this.state.cards}
+                        handleCard={this.handleCard}
                     />
                 </div>
             )

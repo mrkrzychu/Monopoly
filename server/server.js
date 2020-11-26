@@ -58,6 +58,38 @@ app.get('/getBoard', (req, res) => {
   });
 });
 
+app.post('/newGame', (req, res) => {
+  let sqlPlayer = 'delete FROM player';
+  let queryPlayer = db.query(sqlPlayer, (errP, resultsPlayer) => {
+    if (errP) throw errP;
+
+    let sqlBoard = 'update board set owner = NULL, house = NULL, hotel = NULL';
+    let queryBoard = db.query(sqlBoard, (errB, resultsBoard) => {
+      if (errB) throw errB;
+
+      res.send({});
+    });
+  });
+});
+
+
+app.post('/bancrupt', (req, res) => {
+  // res.send({});
+  const params = req.body;
+  const player = params.player;
+
+  let sqlPlayer = 'update player set lost = 1 where id = ' + player;
+  let queryPlayer = db.query(sqlPlayer, (errP, resultsPlayer) => {
+    if (errP) throw errP;
+
+    let sqlBoard = 'update board set owner = NULL, house = NULL, hotel = NULL where owner = ' + player;
+    let queryBoard = db.query(sqlBoard, (errB, resultsBoard) => {
+      if (errB) throw errB;
+
+    });
+  });
+});
+
 //new player
 app.post('/newplayer', (req, res) => {
   const params = req.body;
@@ -66,7 +98,12 @@ app.post('/newplayer', (req, res) => {
   let selectQuery = db.query(selectSql, (err, selectResult) => {
     if (err) throw err;
 
-    var nextId = selectResult[0].maxid + 1;
+    var maxId = selectResult[0].maxid;
+    var nextId = 0;
+    if (maxId != null) {
+      nextId = maxId + 1;
+    }
+    
     let sqlParams = { id: nextId, name: params.name, cash: 1000, color_player: params.color, position: 0 };
     let sql = 'INSERT INTO player SET ?';
     let query = db.query(sql, sqlParams, (err, result) => {
@@ -82,6 +119,9 @@ app.post('/move', (req, res) => {
   const params = req.body;
   const player = params.player;
   const move = params.value;
+
+  console.log(player)
+  console.log(move)
 
   if (typeof player == 'undefined' || typeof move == 'undefined') {
     res.send('error');
@@ -113,7 +153,7 @@ app.post('/move', (req, res) => {
     ////////////////////////////////////////
     // zawsze wskakuje na pole do zaplaty
     if (player == 0) {
-      newPosition = 7;
+      // newPosition = 7;
     }
     ////////////////////////////////////////
 
@@ -132,16 +172,15 @@ app.post('/move', (req, res) => {
           ret.todo = {};
           ret.todo.action = "BUY";
           ret.todo.field = field;
-          //moze tutaj wrzucic pola do zaplaty id 4 i 38
         } else if (field.owner != null && field.owner != player) {
           ret.todo = {};
           ret.todo.action = "PAY";
           ret.todo.field = field;
-        } else if (field.owner == player) {
+        } else if (field.owner == player && field.type == 'PROPERTY' && field.hotel === null) {
           ret.todo = {};
           ret.todo.action = "BUILD";
           ret.todo.field = field;
-        } else if (newPosition == 2 || newPosition == 7 || newPosition == 17 || newPosition == 22 || newPosition == 33 || newPosition == 36) {
+        } else if (field.type === 'CARD') {
           ret.todo = {};
           ret.todo.action = "CARD";
           ret.todo.field = field;
@@ -177,6 +216,50 @@ app.post('/buy', (req, res) => {
       var ret = {};
       ret.cash = newCash;
       res.send(ret);
+    });
+  });
+});
+
+app.post('/balance', (req, res) => {
+  const params = req.body;
+  const player = params.player;
+  const cash = params.cash;
+  const balance = params.balance;
+  const newCash = cash + balance;
+
+  let sql = 'update player set cash = ' + newCash + ' where id = ' + player;
+  let query = db.query(sql, (err, results) => {
+    if (err) throw err;
+
+    var ret = {};
+    ret.cash = newCash;
+    res.send(ret);
+  });
+});
+
+app.post('/build', (req, res) => {
+  const params = req.body;
+  const player = params.player;
+  const cash = params.cash;
+  const field = params.field;
+  const level = params.level;
+
+  let sql = 'update player set cash = ' + cash + ' where id = ' + player;
+  let query = db.query(sql, (err, results) => {
+    if (err) throw err;
+
+    var sqlBoard = 'update board set ';
+    if (level == 5) {
+      sqlBoard += 'hotel = 1, house = NULL';
+    } else {
+      sqlBoard += 'house = ' + level;
+    }
+    sqlBoard += ' where id = ' + field;
+
+    let queryBoard = db.query(sqlBoard, (err, resultsBoard) => {
+      if (err) throw err;
+
+      res.send({ 'OK': 'OK' });
     });
   });
 });

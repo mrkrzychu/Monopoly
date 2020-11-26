@@ -2,14 +2,25 @@ import React, { Component } from 'react'
 
 class Players extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+
         this.state = {
             playerName: "",
-            playerColor: "#" + Math.floor(Math.random() * 16777215).toString(16)
+            playerColor: this.getNewColor()
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    getNewColor() {
+        var color = "#" + Math.floor(Math.random() * 16).toString(16)
+            + Math.floor(Math.random() * 16).toString(16)
+            + Math.floor(Math.random() * 16).toString(16)
+            + Math.floor(Math.random() * 16).toString(16)
+            + Math.floor(Math.random() * 16).toString(16)
+            + Math.floor(Math.random() * 16).toString(16);
+        return color;
     }
 
     handleChange(event) {
@@ -27,7 +38,7 @@ class Players extends Component {
 
         this.setState({
             playerName: "",
-            playerColor: "#" + Math.floor(Math.random() * 16777215).toString(16)
+            playerColor: this.getNewColor()
         });
     }
 
@@ -44,6 +55,7 @@ class Players extends Component {
                             <span className="card-text">
                                 kasa: {pl.cash}
                             </span>
+                            <div>Lost: {pl.lost}</div>
                         </div>
                     </div>
                 )}

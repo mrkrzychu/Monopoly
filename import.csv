@@ -1,28 +1,28 @@
-﻿0;szansa;Idż na ulice płowiecką jeśli przejdziesz przez START pobierz 200zł;11;null;null
-1;szansa;Idź na Dworzec Zachodni. Jeśli przejdziesz przez START pobierz 200zł;5;null;null
-2;szansa;Zrobiłeś błąd w kalkulacjach podatkowych. Zapłać każdemu graczowi 50zł;null;null;-50
-3;szansa;Idź na  Dworzec Centralny. Jeśli nie jest zajęty możesz go kupić od banku. Jeśli jest już zajęty zapłać właścicielowi odpowiednią sumę.;35;null;null
-4;szansa;Idź na  Dworzec Wchodni. Jeśli nie jest zajęty możesz go kupić od banku. Jeśli jest już zajęty zapłać właścicielowi odpowiednią sumę.;25;null;null
-5;szansa;Idź do Elektrowni.Jeśli nie jest zajęta możesz ją kupić od banku. Jeśli jest już zajęta rzuć kostką jeszcze raz i zapłać właścicielowi odpowiednią sumę.;12;null;null
-6;szansa;Idź do więzienia. Nie przechodź przez START. Nie pobieraj 200zł;10;null;null
-7;szansa;Idź na Plac Wilson. Jeśli przejdziesz przez START pobierz  200zł;24;null;null
-8;szansa;Bank wypłaca Ci dywidwndę. Pobierz 50zł;null;50;null
-9;szansa;Zwrot podatku.Pobierz  150zł;null;150;null
-10;szansa;Przejdź na START. Pobierz 200zł;0;null;null
-11;szansa;Zapłać grzywne w wysokości 15zł;null;-15;null
-12;szansa;Cofnij się o trzy pola.;-3;null;null
-13;szansa;Idź na Aleje Ujazdowskie;39;null;null
-14;kasa;Zająłeś 2 miejsce w konkursie piękności. Pobierz 10zł;null;10;null
-15;kasa;Błąd bankowy na twoim koncie! Pobierz 200zł;null;200;null
-16;kasa;Idź do więzienia. Nie przechodź przez START. Nie pobieraj 200zł;10;null;null
-17;kasa;Masz urodziny! Pobierz 10zł od każdego gracza.;null;null;10
-18;kasa;Fundusz Zdrowotny. Pobierz 100zł;null;100;null
-19;kasa;Zapłać za wizytę u dentysty 100zł;null;-100;null
-20;kasa;Zapłać czesne 50zł;null;-50;null
-21;kasa;Przejdź na START ( Pobierz 200zł);0;null;null
-22;kasa;Wyprzedaż! Pobierz M 50;null;50;null
-23;kasa;Zapłać za wizytę Lekarską 50zł;null;-50;null
-24;kasa;Zwrot podatku. Pobierz 20zł;null;20;null
-25;kasa;Otrzymujesz 25zł za porady finansowe;null;25;null
-26;kasa;Odziedziczyłeś spadek. Pobierz 100zł;null;100;null
-27;kasa;Dostałeś premię! Pobierz 100zł;null;100;null
+﻿0;szansa;Idż na ulice płowiecką jeśli przejdziesz przez START pobierz 200zł;11;NULL;
+1;szansa;Idź na Dworzec Zachodni. Jeśli przejdziesz przez START pobierz 200zł;5;NULL;
+2;szansa;Zrobiłeś błąd w kalkulacjach podatkowych. Zapłać każdemu graczowi 50zł;NULL;;-50
+3;szansa;Idź na  Dworzec Centralny. Jeśli nie jest zajęty możesz go kupić od banku. Jeśli jest już zajęty zapłać właścicielowi odpowiednią sumę.;35;NULL;
+4;szansa;Idź na  Dworzec Wchodni. Jeśli nie jest zajęty możesz go kupić od banku. Jeśli jest już zajęty zapłać właścicielowi odpowiednią sumę.;25;NULL;
+5;szansa;Idź do Elektrowni.Jeśli nie jest zajęta możesz ją kupić od banku. Jeśli jest już zajęta rzuć kostką jeszcze raz i zapłać właścicielowi odpowiednią sumę.;12;NULL;
+6;szansa;Idź do więzienia. Nie przechodź przez START. Nie pobieraj 200zł;10;NULL;
+7;szansa;Idź na Plac Wilson. Jeśli przejdziesz przez START pobierz  200zł;24;NULL;
+8;szansa;Bank wypłaca Ci dywidwndę. Pobierz 50zł;NULL;50;
+9;szansa;Zwrot podatku.Pobierz  150zł;NULL;150;
+10;szansa;Przejdź na START. Pobierz 200zł;0;NULL;
+11;szansa;Zapłać grzywne w wysokości 15zł;NULL;-15;
+12;szansa;Cofnij się o trzy pola.;-3;NULL;
+13;szansa;Idź na Aleje Ujazdowskie;39;NULL;
+14;kasa;Zająłeś 2 miejsce w konkursie piękności. Pobierz 10zł;NULL;10;
+15;kasa;Błąd bankowy na twoim koncie! Pobierz 200zł;NULL;200;
+16;kasa;Idź do więzienia. Nie przechodź przez START. Nie pobieraj 200zł;10;NULL;
+17;kasa;Masz urodziny! Pobierz 10zł od każdego gracza.;NULL;;10
+18;kasa;Fundusz Zdrowotny. Pobierz 100zł;NULL;100;
+19;kasa;Zapłać za wizytę u dentysty 100zł;NULL;-100;
+20;kasa;Zapłać czesne 50zł;NULL;-50;
+21;kasa;Przejdź na START ( Pobierz 200zł);0;NULL;
+22;kasa;Wyprzedaż! Pobierz M 50;NULL;50;
+23;kasa;Zapłać za wizytę Lekarską 50zł;NULL;-50;
+24;kasa;Zwrot podatku. Pobierz 20zł;NULL;20;
+25;kasa;Otrzymujesz 25zł za porady finansowe;NULL;25;
+26;kasa;Odziedziczyłeś spadek. Pobierz 100zł;NULL;100;
+27;kasa;Dostałeś premię! Pobierz 100zł;NULL;100;

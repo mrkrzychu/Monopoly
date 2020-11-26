@@ -10,12 +10,15 @@ class ResponsePopup extends Component {
 
         this.handleChangeBuildSelect = this.handleChangeBuildSelect.bind(this);
         this.handleBuildSubmit = this.handleBuildSubmit.bind(this);
+        this.escFunction = this.escFunction.bind(this);
     }
 
     handleChangeBuildSelect(event) {
         const target = event.target;
-        const value = target.value;
-        const price = target.options[value - 1].getAttribute('price');
+        const value = Number(target.value);
+        console.log(value)
+        console.log(target.options)
+        const price = Number(target.options[value - 1 - (5 - target.options.length)].getAttribute('price'));
 
         this.setState({
             buildLevel: value,
@@ -25,7 +28,18 @@ class ResponsePopup extends Component {
 
     handleBuildSubmit(e) {
         e.preventDefault();
-        this.props.handleBuild();
+
+        var level = 0;
+        var price;
+        if (this.state.buildLevel === 0 && this.state.buildPrice === 0) {
+            level = Number(e.target['buildOption'].value);
+            price = this.props.popup.field.price / 2;
+        } else {
+            level = this.state.buildLevel;
+            price = this.state.buildPrice;
+        }
+
+        this.props.handleBuild(level, price, this.props.popup.field.id);
 
         this.setState({
             buildLevel: 0,
@@ -33,10 +47,35 @@ class ResponsePopup extends Component {
         });
     }
 
+    componentDidMount() {
+        document.addEventListener("keydown", this.escFunction, false);
+    }
+
+    escFunction(event) {
+        if (event.keyCode === 27) {
+            var popup = this.props.popup;
+            switch (popup.action) {
+                case 'BUY':
+                    this.props.endTurn();
+                    break;
+                case 'PAY':
+                    this.props.handlePay();
+                    break;
+                case 'BUILD':
+                    this.props.endTurn();
+                    break;
+                case 'CARD':
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     render() {
         var popup = this.props.popup;
         var field = popup.field;
-        var card = this.props.card;
+        var cards = this.props.cards;
 
         switch (popup.action) {
             case 'BUY':
@@ -44,7 +83,7 @@ class ResponsePopup extends Component {
                     <div className='popup'>
                         <div className='popupContent'>
                             <p>Czy chcesz kupić {field.name} za {field.price} zł?</p>
-                            <button onClick={this.props.handleBuy}>Tak, kupuję</button>
+                            <button onClick={this.props.handleBuy} autoFocus>Tak, kupuję</button>
                             <button onClick={this.props.endTurn}>Nie, rezygnuję</button>
                         </div>
                     </div>
@@ -72,10 +111,9 @@ class ResponsePopup extends Component {
                 return (
                     <div className='popup'>
                         <div className='popupContent'>
-                            <p>
-                                Płacisz czynsz w wysokości {payment}zł dla gracza {field.owner}
-                            </p>
-                            <button onClick={this.props.handlePay}>ok</button>
+                            <p>{field.name}</p>
+                            <p>Płacisz czynsz w wysokości {payment}zł dla gracza {field.owner}</p>
+                            <button onClick={this.props.handlePay} autoFocus >ok</button>
                         </div>
                     </div>
                 )
@@ -97,19 +135,13 @@ class ResponsePopup extends Component {
                 options.push({ level: 5, name: "Hotel" });
                 options.splice(0, level);
 
-                // if (options.length > 0) {
-                //     this.setState({
-                //         buildLevel: options[0].level,
-                //         buildPrice: buildPrice / 2
-                //     });
-                // }
-
                 return (
                     <div className='popup'>
                         <div className='popupContent'>
                             <form onSubmit={this.handleBuildSubmit}>
+                                <p>{field.name}</p>
                                 <p>Możesz rozbudować ulicę do poziomu:</p>
-                                <select onChange={this.handleChangeBuildSelect}>
+                                <select onChange={this.handleChangeBuildSelect} name='buildOption'>
                                     {options.map((opt) =>
                                         <option
                                             key={opt.level}
@@ -119,7 +151,7 @@ class ResponsePopup extends Component {
                                         </option>
                                     )}
                                 </select>
-                                <button>ok</button>
+                                <button autoFocus >ok</button>
                             </form>
                             <button onClick={this.props.endTurn}>Nie, rezygnuję</button>
                         </div>
@@ -127,50 +159,29 @@ class ResponsePopup extends Component {
                 )
             case 'CARD':
                 var fieldName = field.name;
-                var chanceCard = card.slice(0, 14);
-                var cashCard = card.slice(14, 28);
-                var number = Math.floor(Math.random() * 14); //czy to jest dobrze ??!?!?!?!!?!?!?!!??!!?!!??!!??!?!?!
-                var cardName = "";
-                //var cardId;
+                var chanceCards = cards.slice(0, 14);
+                var cashCards = cards.slice(14, 28);
+                var number = Math.floor(Math.random() * 14);
+                var card;
 
-                console.log(number);
                 if (fieldName === "SZANSA") {
-                    cardName = chanceCard[number].text;
-                    //cardId = chanceCard[number].id;
-
-                    return (
-                        <div className='popup'>
-                            <div className='popupContent'>
-                                <div>
-                                    {fieldName}
-                                </div>
-                                <div>
-                                    {cardName}
-                                </div>
-                                <button onClick={this.props.endTurn}>ok</button>
-                            </div>
-                        </div>
-                    )
+                    card = chanceCards[number];
                 } else {
-                    cardName = cashCard[number].text;
-                    //cardId = chanceCard[number].id;
-
-                    return (
-                        <div className='popup'>
-                            <div className='popupContent'>
-                                <div>
-                                    {fieldName}
-                                </div>
-                                <div>
-                                    {cardName}
-                                </div>
-                                <button onClick={this.props.endTurn}>ok</button>
-                            </div>
-                        </div>
-                    )
+                    card = cashCards[number];
                 }
-
-
+                return (
+                    <div className='popup'>
+                        <div className='popupContent'>
+                            <div>
+                                {fieldName}
+                            </div>
+                            <div>
+                                {card.text}
+                            </div>
+                            <button onClick={() => this.props.handleCard(card)} autoFocus >ok</button>
+                        </div>
+                    </div>
+                )
             default:
                 return null;
         }

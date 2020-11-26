@@ -5,6 +5,9 @@ export default class BoardService {
         this.PAY_URL = "http://localhost:3000/pay";
         this.NEWPLAYER_URL = "http://localhost:3000/newplayer";
         this.BUILD_URL = "http://localhost:3000/build";
+        this.BALANCE_URL = "http://localhost:3000/balance";
+        this.NEWGAME_URL = "http://localhost:3000/newgame";
+        this.BANCRUPT_URL = "http://localhost:3000/bancrupt";
     }
 
     async move(player, value) {
@@ -23,8 +26,28 @@ export default class BoardService {
     }
 
     async newPlayer(name, color) {
-        var params = {name, color};
+        var params = { name, color };
         return this.fetchRequest(params, this.NEWPLAYER_URL);
+    }
+
+    async balance(player, cash, balance) {
+        var params = { player, cash, balance };
+        return this.fetchRequest(params, this.BALANCE_URL);
+    }
+
+    async build(player, cash, field, level) {
+        var params = { player, cash,  field, level };
+        return this.fetchRequest(params, this.BUILD_URL);
+    }
+
+    async newGame() {
+        var params = {};
+        return this.fetchRequest(params, this.NEWGAME_URL);
+    }
+
+    async bancrupt(player) {
+        var params = {player};
+        return this.fetchRequest(params, this.BANCRUPT_URL);
     }
 
     async fetchRequest(params, url) {
