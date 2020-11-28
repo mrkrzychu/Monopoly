@@ -1,5 +1,4 @@
 const express = require('express');
-// const cors = require('cors');
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const mysql = require('mysql');
@@ -24,12 +23,6 @@ db.connect((err) => {
 const app = express();
 app.use(bodyParser.json());
 app.use(pino);
-
-
-
-app.get('/1', (req, res) => {
-  res.send(123);
-});
 
 // get board
 app.get('/getBoard', (req, res) => {
@@ -57,6 +50,7 @@ app.get('/getBoard', (req, res) => {
     });
   });
 });
+
 
 app.post('/newGame', (req, res) => {
   let sqlPlayer = 'delete FROM player';
@@ -90,7 +84,6 @@ app.post('/bancrupt', (req, res) => {
   });
 });
 
-//new player
 app.post('/newplayer', (req, res) => {
   const params = req.body;
 
@@ -104,7 +97,7 @@ app.post('/newplayer', (req, res) => {
       nextId = maxId + 1;
     }
     
-    let sqlParams = { id: nextId, name: params.name, cash: 1000, color_player: params.color, position: 0 };
+    let sqlParams = { id: nextId, name: params.name, cash: 1500, color_player: params.color, position: 0 };
     let sql = 'INSERT INTO player SET ?';
     let query = db.query(sql, sqlParams, (err, result) => {
       if (err) throw err;
@@ -114,14 +107,10 @@ app.post('/newplayer', (req, res) => {
   });
 });
 
-// update record "move"
 app.post('/move', (req, res) => {
   const params = req.body;
   const player = params.player;
   const move = params.value;
-
-  console.log(player)
-  console.log(move)
 
   if (typeof player == 'undefined' || typeof move == 'undefined') {
     res.send('error');
@@ -148,6 +137,7 @@ app.post('/move', (req, res) => {
 
     if (newPosition == 30) {
       newPosition = 10;
+      
     }
 
     ////////////////////////////////////////

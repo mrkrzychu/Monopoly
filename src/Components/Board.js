@@ -4,7 +4,6 @@ import Players from './Players';
 import ResponsePopup from './ResponsePopup';
 import BoardService from './BoardService';
 
-
 class Board extends Component {
     constructor(props) {
         super(props)
@@ -27,7 +26,6 @@ class Board extends Component {
         this.handleNewPlayer = this.handleNewPlayer.bind(this);
         this.handleBuild = this.handleBuild.bind(this);
         this.handleCard = this.handleCard.bind(this);
-
         this.endTurn = this.endTurn.bind(this);
         this.newGame = this.newGame.bind(this);
         this.boardService = new BoardService();
@@ -64,7 +62,6 @@ class Board extends Component {
             }
         }
 
-
         this.setState({
             fields: fields,
             players: players
@@ -87,6 +84,7 @@ class Board extends Component {
     }
 
     movePlayer(move) {
+
         this.boardService.move(this.state.currplayer, move).then((res) => {
             var old = res.old;
             var neww = res.new;
@@ -115,7 +113,6 @@ class Board extends Component {
             players[this.state.currplayer].position = neww;
 
             this.updateFieldsPlayersState(fields, players);
-
             if (typeof res.todo != 'undefined') {
                 this.setState({
                     popup: res.todo
@@ -145,7 +142,6 @@ class Board extends Component {
     handlePay() {
         var players = this.state.players;
         var fields = this.state.fields;
-
         var field_id = players[this.state.currplayer].position;
         var field = fields[field_id];
         var price = fields[field_id].price;
@@ -264,9 +260,10 @@ class Board extends Component {
             nextPlayer = (nextPlayer + 1) % this.state.players.length;
         }
 
-        console.log(this.state.activePlayers)
         if (this.state.activePlayers === 1) {
-            window.alert('WYGRAL GRACZ ' + nextPlayer)
+            this.setState({
+                popup: { action: "WINNER", players: this.state.players, player: nextPlayer }
+            });
             return;
         }
 
@@ -413,6 +410,7 @@ class Board extends Component {
                         handleBuild={this.handleBuild}
                         cards={this.state.cards}
                         handleCard={this.handleCard}
+                        newGame={this.newGame}
                     />
                 </div>
             )

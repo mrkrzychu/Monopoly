@@ -53,9 +53,16 @@ class Players extends Component {
                                 {pl.name}
                             </h6>
                             <span className="card-text">
-                                kasa: {pl.cash}
+                                {pl.cash + ' '}zł
                             </span>
-                            <div>Lost: {pl.lost}</div>
+                            <div>
+                                {pl.lost === 1 &&
+                                    <div className='bancrupt card-body border border-danger'>
+                                        <div className="line1"></div>
+                                        <div className="line2"></div>
+                                    </div>
+                                }
+                            </div>
                         </div>
                     </div>
                 )}

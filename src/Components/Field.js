@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import icons from 'glyphicons'
 
-
 class Field extends Component {
 
   render() {
@@ -66,6 +65,5 @@ class Field extends Component {
     );
   }
 }
-
 
 export default Field

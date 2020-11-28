@@ -66,6 +66,8 @@ class ResponsePopup extends Component {
                     break;
                 case 'CARD':
                     break;
+                case 'WINNER':
+                    break;
                 default:
                     break;
             }
@@ -179,6 +181,19 @@ class ResponsePopup extends Component {
                                 {card.text}
                             </div>
                             <button onClick={() => this.props.handleCard(card)} autoFocus >ok</button>
+                        </div>
+                    </div>
+                )
+            case 'WINNER':
+                var winner = popup.player
+
+                return (
+                    <div className='popup'>
+                        <div className='popupContent'>
+                            <div>
+                                Wygrał gracz: {winner}
+                            </div>
+                            <button className="btn btn-danger m-2" onClick={() => this.props.newGame()} autoFocus >Nowa gra</button>
                         </div>
                     </div>
                 )
