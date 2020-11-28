@@ -76,23 +76,37 @@ class Board extends Component {
 
         this.setState({
             dices: [a, b]
-        })
+        });
+
+        var players = this.state.players;
+        var pl = players[this.state.currplayer];
+        if (pl.jail > 0) {
+            if (a !== b) {
+                a = 0;
+                b = 0;
+            }
+        }
 
         var move = (a + b) % 40;
 
         this.movePlayer(move);
     }
 
-    movePlayer(move) {
+    movePlayer(move, jail) {
+        if (typeof jail === 'undefined') {
+            jail = false;
+        }
 
-        this.boardService.move(this.state.currplayer, move).then((res) => {
+        this.boardService.move(this.state.currplayer, move, jail).then((res) => {
             var old = res.old;
             var neww = res.new;
             var newCash = res.cash;
+            var jail = res.jail;
             var fields = this.state.fields;
             var players = this.state.players;
             var pl;
             players[this.state.currplayer].cash = newCash;
+            players[this.state.currplayer].jail = jail;
 
             if (fields[old].players.length === 1) {
                 pl = fields[old].players[0];
@@ -187,13 +201,17 @@ class Board extends Component {
 
         if (card.goto !== null) {
             var move;
+            var jail = false;
             if (card.goto >= 0) {
                 var curPosition = this.state.players[this.state.currplayer].position;
                 move = (card.goto - curPosition + 40) % 40;
+                if (card.goto == 10) {
+                    jail = true;
+                }
             } else {
                 move = card.goto;
             }
-            this.movePlayer(move);
+            this.movePlayer(move, jail);
 
         } else if (card.balance !== null) {
             this.boardService.balance(pl.id, pl.cash, card.balance).then((res) => {
@@ -369,7 +387,7 @@ class Board extends Component {
                         </div>
                         <div className="space corner go">
                             <Field item={start} />
-                            Przechodząc przez start dostajesz 200zł
+                            Przechodząc przez start pobierasz 200zł
                         </div>
                         <div className="boardRow horizontal-row bottom-row">
                             {bottom.map((item) =>

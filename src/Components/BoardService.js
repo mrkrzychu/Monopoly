@@ -10,8 +10,8 @@ export default class BoardService {
         this.BANCRUPT_URL = "http://localhost:3000/bancrupt";
     }
 
-    async move(player, value) {
-        var params = { "player": player, "value": value };
+    async move(player, value, jail) {
+        var params = { player, value, jail };
         return this.fetchRequest(params, this.MOVE_URL);
     }
 

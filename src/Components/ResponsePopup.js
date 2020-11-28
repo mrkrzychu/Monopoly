@@ -68,6 +68,10 @@ class ResponsePopup extends Component {
                     break;
                 case 'WINNER':
                     break;
+                case 'TAX':
+                    break;
+                case 'GOTOJAIL':
+                    break;
                 default:
                     break;
             }
@@ -96,7 +100,9 @@ class ResponsePopup extends Component {
                 if (typeof field != 'undefined') {
                     var payprice = field.price;
 
-                    if (field.house == null && field.hotel == null) {
+                    if (field.type === "SPECIAL") {
+                        payment = payprice / 2;
+                    } else if (field.house == null && field.hotel == null && field.type !== "SPECIAL") {
                         payment = payprice / 10;
                     } else if (field.house === 1) {
                         payment = payprice / 2;
@@ -194,6 +200,39 @@ class ResponsePopup extends Component {
                                 Wygrał gracz: {winner}
                             </div>
                             <button className="btn btn-danger m-2" onClick={() => this.props.newGame()} autoFocus >Nowa gra</button>
+                        </div>
+                    </div>
+                )
+            case 'TAX':
+                var price = field.price;
+                var name = field.name;
+
+                return (
+                    <div className='popup'>
+                        <div className='popupContent'>
+                            <div>
+                                stanąłeś na {" " + name}
+                            </div>
+                            <div>
+                                Płacisz {" " + price + " "} zł
+                            </div>
+                            <button onClick={this.props.endTurn} autoFocus >ok</button>
+                        </div>
+                    </div>
+                )
+            case 'GOTOJAIL':
+                var name = field.name;
+
+                return (
+                    <div className='popup'>
+                        <div className='popupContent'>
+                            <div>
+                                Idziesz do {name}
+                            </div>
+                            <div>
+                                Przechodząc przez START nie pobierasz 200zł
+                            </div>
+                            <button onClick={this.props.endTurn} autoFocus >ok</button>
                         </div>
                     </div>
                 )

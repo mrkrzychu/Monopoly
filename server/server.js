@@ -96,7 +96,7 @@ app.post('/newplayer', (req, res) => {
     if (maxId != null) {
       nextId = maxId + 1;
     }
-    
+
     let sqlParams = { id: nextId, name: params.name, cash: 1500, color_player: params.color, position: 0 };
     let sql = 'INSERT INTO player SET ?';
     let query = db.query(sql, sqlParams, (err, result) => {
@@ -111,21 +111,30 @@ app.post('/move', (req, res) => {
   const params = req.body;
   const player = params.player;
   const move = params.value;
+  const gotoJail = params.jail;
 
   if (typeof player == 'undefined' || typeof move == 'undefined') {
     res.send('error');
     return;
   }
 
-  let sqlPlayer = 'SELECT position, cash FROM player WHERE id = ' + player;
+  let sqlPlayer = 'SELECT position, cash, jail FROM player WHERE id = ' + player;
   let queryPlayer = db.query(sqlPlayer, (errP, resultsPlayer) => {
     if (errP) throw errP;
 
     const curPosition = resultsPlayer[0].position;
     var newPosition = (curPosition + move) % 40;
     var newCash = resultsPlayer[0].cash;
+    var jail = resultsPlayer[0].jail;
 
-    if (newPosition < curPosition) {
+    ////////////////////////////////////////
+    // zawsze wskakuje na pole
+    if (player == 0) {
+    //  newPosition = 30;
+    }
+    ////////////////////////////////////////
+
+    if (newPosition < curPosition && !gotoJail) {
       newCash += 200;
     }
 
@@ -135,19 +144,21 @@ app.post('/move', (req, res) => {
       newCash -= 100;
     }
 
-    if (newPosition == 30) {
+    if (jail > 0) {
+      jail--;
+    }
+
+    if (jail > 0 && move > 0) {
+      jail = 0;
+    }
+
+    if (newPosition === 30 || gotoJail) {
       newPosition = 10;
-      
+      jail = 3;
     }
 
-    ////////////////////////////////////////
-    // zawsze wskakuje na pole do zaplaty
-    if (player == 0) {
-      // newPosition = 7;
-    }
-    ////////////////////////////////////////
 
-    let sql = 'UPDATE player SET position = ' + newPosition + ' ,cash = ' + newCash + ' WHERE id = ' + player;
+    let sql = 'UPDATE player SET position = ' + newPosition + ' ,cash = ' + newCash + ' , jail = ' + jail + ' WHERE id = ' + player;
     let query = db.query(sql, (err, result) => {
       if (err) throw err;
 
@@ -158,7 +169,8 @@ app.post('/move', (req, res) => {
         ret.old = curPosition;
         ret.new = newPosition;
         ret.cash = newCash;
-        if (field.owner == null && field.price != null) {
+        ret.jail = jail;
+        if (field.owner == null && field.price != null && field.type != "TAX") {
           ret.todo = {};
           ret.todo.action = "BUY";
           ret.todo.field = field;
@@ -173,6 +185,14 @@ app.post('/move', (req, res) => {
         } else if (field.type === 'CARD') {
           ret.todo = {};
           ret.todo.action = "CARD";
+          ret.todo.field = field;
+        } else if (field.type === "TAX") {
+          ret.todo = {};
+          ret.todo.action = "TAX";
+          ret.todo.field = field;
+        } else if (jail === 3){
+          ret.todo = {};
+          ret.todo.action = "GOTOJAIL";
           ret.todo.field = field;
         }
         res.send(ret);
@@ -271,7 +291,9 @@ app.post('/pay', (req, res) => {
   }
 
   var payment = 0;
-  if (field.house == null && field.hotel == null) {
+  if (field.type === "SPECIAL") {
+    payment = price / 2;
+  } else if (field.house == null && field.hotel == null && field.type !== "SPECIAL") {
     payment = price / 10;
   } else if (field.house == 1) {
     payment = price / 2;

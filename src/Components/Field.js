@@ -37,14 +37,26 @@ class Field extends Component {
             {!(typeof item.players == 'undefined') && (
               <div className='playerHeader' >
                 {item.players.map((pl) =>
-                  <div key={pl.id} className='playerIcon' style={{ background: pl.color_player }}>&nbsp;</div>
+                  <div key={pl.id} className='playerIcon' style={{ background: pl.color_player }}>
+                    {(pl.jail > 0) ? (
+                      <div>{pl.jail}</div>
+                    ) : (
+                      <div>&nbsp;</div>
+                    )}
+
+                  </div>
                 )}
               </div>
             )}
           </div>
-          {(typeof item.price == 'number') && (
+          {(typeof item.price == 'number' && item.type !== "TAX") && (
             <div key={item.price}>
               cena: {item.price + " "} zł
+            </div>
+          )}
+          {(typeof item.price == 'number' && item.type === "TAX") && (
+            <div key={item.price}>
+              płacisz: {item.price + " "} zł
             </div>
           )}
           <div>

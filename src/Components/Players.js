@@ -50,6 +50,9 @@ class Players extends Component {
                         key={pl.id}>
                         <div className="card-body border border-dark" style={{ backgroundColor: pl.color_player, color: '#FFFFFF' }}>
                             <h6 className="card-title">
+                                gracz:{pl.id}
+                            </h6>
+                            <h6 className="card-title">
                                 {pl.name}
                             </h6>
                             <span className="card-text">
