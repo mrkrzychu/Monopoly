@@ -69,7 +69,9 @@ class Board extends Component {
     }
 
     handleMove(e) {
-        e.preventDefault();
+        if (typeof e !== "undefined") {
+            e.preventDefault();
+        }
 
         var a = Math.floor(Math.random() * 6) + 1;
         var b = Math.floor(Math.random() * 6) + 1;
@@ -129,9 +131,34 @@ class Board extends Component {
 
             this.updateFieldsPlayersState(fields, players);
             if (typeof res.todo != 'undefined') {
-                this.setState({
-                    popup: res.todo
-                });
+                if (res.todo.action === 'CARD') {
+                    var cards = this.state.cards;
+                    var chanceCards = cards.slice(0, 14);
+                    var cashCards = cards.slice(14, 28);
+                    var number = Math.floor(Math.random() * 14);
+                    var fieldName = res.todo.field.name;
+                    var card;
+
+                    if (fieldName === "SZANSA") {
+                        card = chanceCards[number];
+                    } else {
+                        card = cashCards[number];
+                    }
+                    res.todo.card = card;
+                }
+
+                if (pl.computer === 1) {
+                    res.todo.computer = 1;
+                    this.setState({
+                        popup: res.todo
+                    });
+                    this.computerPopup(res.todo);
+                } else {
+                    this.setState({
+                        popup: res.todo
+                    });
+                }
+
             } else {
                 this.endTurn();
             }
@@ -177,8 +204,8 @@ class Board extends Component {
     }
 
 
-    handleNewPlayer(name, color) {
-        this.boardService.newPlayer(name, color).then((res) => {
+    handleNewPlayer(name, color, computer) {
+        this.boardService.newPlayer(name, color, computer).then((res) => {
             var players = this.state.players;
             var fields = this.state.fields;
             players.push(res);
@@ -196,9 +223,10 @@ class Board extends Component {
         });
     }
 
-    handleCard(card) {
+    handleCard() {
         var players = this.state.players;
-        var pl = players[this.state.currplayer]
+        var pl = players[this.state.currplayer];
+        var card = this.state.popup.card;
 
         if (card.goto !== null) {
             var move;
@@ -286,10 +314,64 @@ class Board extends Component {
             return;
         }
 
-        this.setState({
-            popup: {},
-            currplayer: nextPlayer
-        });
+        var computer = this.state.players[nextPlayer].computer;
+
+        if (computer) {
+            this.setState({
+                popup: {},
+                currplayer: nextPlayer
+            }, this.computerMove);
+        } else {
+            this.setState({
+                popup: {},
+                currplayer: nextPlayer
+            });
+        }
+
+    }
+
+    computerMove() {
+        this.handleMove()
+    }
+
+    computerPopup(popup) {
+        switch (popup.action) {
+            case 'BUY':
+                if (Math.random() < 0.8) {
+                    this.handleBuy();
+                } else {
+                    this.endTurn();
+                }
+                break;
+            case 'PAY':
+                this.handlePay();
+                break;
+            case 'BUILD':
+                if (popup.field.price < this.state.players[this.state.currplayer].cash && popup.field.hotel !== 1) {
+                    var field = popup.field;
+                    var house = field.house;
+                    var buildPrice = field.price / 2;
+                    var level = house || 0;
+
+                    this.handleBuild(level + 1, buildPrice, field.id);
+                } else {
+                    this.endTurn();
+                }
+                break;
+            case 'CARD':
+                this.handleCard();
+                break;
+            case 'WINNER':
+                break;
+            case 'TAX':
+                this.endTurn();
+                break;
+            case 'GOTOJAIL':
+                this.endTurn();
+                break;
+            default:
+                break;
+        }
     }
 
     newGame() {
@@ -377,7 +459,7 @@ class Board extends Component {
                                     <button className="btn btn-warning" >wykonaj ruch</button>
                                 </form>
                                 <h6 className="text-center">
-                                    tura gracza: {this.state.currplayer}
+                                    tura gracza: {this.state.players[this.state.currplayer].name}
                                 </h6>
                             </div>
                             <div className="dices">

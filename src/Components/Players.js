@@ -26,7 +26,7 @@ class Players extends Component {
 
     handleChange(event) {
         const target = event.target;
-        const value = target.value;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         this.setState({
             [name]: value
@@ -35,12 +35,29 @@ class Players extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.handleNewPlayer(this.state.playerName, this.state.playerColor);
+        this.props.handleNewPlayer(this.state.playerName, this.state.playerColor, this.state.computer);
 
         this.setState({
             playerName: "",
-            playerColor: this.getNewColor()
+            playerColor: this.getNewColor(),
+            computer: false
         });
+    }
+
+    computer(pl) {
+        if (pl.computer) {
+            return <span>*</span>
+        }else {
+            return null;
+        }
+    }
+
+    classNames(pl) {
+        var ret = "card-body";
+        if (pl.lost) {
+            ret += " bancrupt";
+        }
+        return ret;
     }
 
     render() {
@@ -49,31 +66,33 @@ class Players extends Component {
                 {this.props.players.map((pl) =>
                     <div className='col-1'
                         key={pl.id}>
-                        <div className="card-body border border-dark" style={{ backgroundColor: pl.color_player, color: '#FFFFFF' }}>
+                        <div 
+                        className={this.classNames(pl)}
+                        style={{ backgroundColor: pl.color_player, color: '#FFFFFF' }}
+                        >
                             <h6 className="card-title">
-                                gracz:{pl.id}
-                            </h6>
-                            <h6 className="card-title">
-                                {pl.name}
+                                {pl.name}{this.computer(pl)}
                             </h6>
                             <span className="card-text">
-                                {pl.cash + ' '}zł
+                                {pl.cash} zł
                             </span>
-                            <div>
-                                {pl.lost === 1 &&
-                                    <div className='bancrupt card-body border border-danger'>
-                                        <div className="line1"></div>
-                                        <div className="line2"></div>
-                                    </div>
-                                }
-                            </div>
                         </div>
                     </div>
                 )}
                 <div className="col-2">
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                            
+                            <input
+                                type="checkbox" 
+                                onChange={this.handleChange}
+                                 name="computer" 
+                                 id="computer"
+                                 checked={this.state.computer} />
+                            <label className="form-check-label ml-1" htmlFor="computer">
+                                <h6>
+                                komputer
+                                </h6>
+                            </label>
                             <input
                                 className="form-control"
                                 name="playerName"

@@ -97,7 +97,14 @@ app.post('/newplayer', (req, res) => {
       nextId = maxId + 1;
     }
 
-    let sqlParams = { id: nextId, name: params.name, cash: 1500, color_player: params.color, position: 0 };
+    let sqlParams = {
+      id: nextId,
+      name: params.name,
+      cash: 1500,
+      color_player: params.color,
+      position: 0,
+      computer: params.computer
+    };
     let sql = 'INSERT INTO player SET ?';
     let query = db.query(sql, sqlParams, (err, result) => {
       if (err) throw err;
@@ -130,7 +137,7 @@ app.post('/move', (req, res) => {
     ////////////////////////////////////////
     // zawsze wskakuje na pole
     if (player == 0) {
-    //  newPosition = 30;
+      //  newPosition = 30;
     }
     ////////////////////////////////////////
 
@@ -190,7 +197,7 @@ app.post('/move', (req, res) => {
           ret.todo = {};
           ret.todo.action = "TAX";
           ret.todo.field = field;
-        } else if (jail === 3){
+        } else if (jail === 3) {
           ret.todo = {};
           ret.todo.action = "GOTOJAIL";
           ret.todo.field = field;

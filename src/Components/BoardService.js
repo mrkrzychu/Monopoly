@@ -16,7 +16,7 @@ export default class BoardService {
     }
 
     async buy(player, field_id, price, cash) {
-        var params = { "player": player, "field_id": field_id, "price": price, "cash": cash };
+        var params = { player, field_id, price, cash };
         return this.fetchRequest(params, this.BUY_URL);
     }
 
@@ -25,8 +25,8 @@ export default class BoardService {
         return this.fetchRequest(params, this.PAY_URL);
     }
 
-    async newPlayer(name, color) {
-        var params = { name, color };
+    async newPlayer(name, color, computer) {
+        var params = { name, color, computer };
         return this.fetchRequest(params, this.NEWPLAYER_URL);
     }
 
@@ -36,7 +36,7 @@ export default class BoardService {
     }
 
     async build(player, cash, field, level) {
-        var params = { player, cash,  field, level };
+        var params = { player, cash, field, level };
         return this.fetchRequest(params, this.BUILD_URL);
     }
 
@@ -46,7 +46,7 @@ export default class BoardService {
     }
 
     async bancrupt(player) {
-        var params = {player};
+        var params = { player };
         return this.fetchRequest(params, this.BANCRUPT_URL);
     }
 

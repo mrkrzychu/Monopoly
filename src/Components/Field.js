@@ -18,7 +18,7 @@ class Field extends Component {
       <div className="space property">
         <div className="boardContainer">
           <div className='fieldHeader' style={{ backgroundColor: color }}></div>
-          <div>
+          <div className="fieldName">
             {item.name}
           </div>
           <div className='housePlaceholder'>

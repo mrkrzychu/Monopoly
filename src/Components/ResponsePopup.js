@@ -27,7 +27,9 @@ class ResponsePopup extends Component {
     }
 
     handleBuildSubmit(e) {
-        e.preventDefault();
+        if (typeof e !== "undefined") {
+            e.preventDefault();
+        }
 
         var level = 0;
         var price;
@@ -65,12 +67,15 @@ class ResponsePopup extends Component {
                     this.props.endTurn();
                     break;
                 case 'CARD':
+                    this.props.handleCard();
                     break;
                 case 'WINNER':
                     break;
                 case 'TAX':
+                    this.props.endTurn();
                     break;
                 case 'GOTOJAIL':
+                    this.props.endTurn();
                     break;
                 default:
                     break;
@@ -81,7 +86,10 @@ class ResponsePopup extends Component {
     render() {
         var popup = this.props.popup;
         var field = popup.field;
-        var cards = this.props.cards;
+
+        if (popup.computer === 1) {
+            return null;
+        }
 
         switch (popup.action) {
             case 'BUY':
@@ -167,16 +175,8 @@ class ResponsePopup extends Component {
                 )
             case 'CARD':
                 var fieldName = field.name;
-                var chanceCards = cards.slice(0, 14);
-                var cashCards = cards.slice(14, 28);
-                var number = Math.floor(Math.random() * 14);
-                var card;
+                var card = popup.card;
 
-                if (fieldName === "SZANSA") {
-                    card = chanceCards[number];
-                } else {
-                    card = cashCards[number];
-                }
                 return (
                     <div className='popup'>
                         <div className='popupContent'>
@@ -186,7 +186,7 @@ class ResponsePopup extends Component {
                             <div>
                                 {card.text}
                             </div>
-                            <button onClick={() => this.props.handleCard(card)} autoFocus >ok</button>
+                            <button onClick={this.props.handleCard} autoFocus >ok</button>
                         </div>
                     </div>
                 )
@@ -199,7 +199,7 @@ class ResponsePopup extends Component {
                             <div>
                                 Wygrał gracz: {winner}
                             </div>
-                            <button className="btn btn-danger m-2" onClick={() => this.props.newGame()} autoFocus >Nowa gra</button>
+                            <button className="btn btn-danger m-2" onClick={this.props.newGame} autoFocus >Nowa gra</button>
                         </div>
                     </div>
                 )
@@ -221,12 +221,12 @@ class ResponsePopup extends Component {
                     </div>
                 )
             case 'GOTOJAIL':
-                
+
                 return (
                     <div className='popup'>
                         <div className='popupContent'>
                             <div>
-                                Idziesz do {name}
+                                Idziesz do {field.name}
                             </div>
                             <div>
                                 Przechodząc przez START nie pobierasz 200zł
