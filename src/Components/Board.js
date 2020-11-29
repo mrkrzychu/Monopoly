@@ -470,7 +470,6 @@ class Board extends Component {
                         </div>
                         <div className="space corner go">
                             <Field item={start} />
-                            Przechodząc przez start pobierasz 200zł
                         </div>
                         <div className="boardRow horizontal-row bottom-row">
                             {bottom.map((item) =>

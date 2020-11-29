@@ -3,16 +3,40 @@ import icons from 'glyphicons'
 
 class Field extends Component {
 
+  housePlaceholder() {
+    const item = this.props.item;
+    if (item.name !== 'START') {
+      const hotel = item.hotel;
+      const house = item.house;
+      const houses = [];
+      for (var i = 1; i <= house; i++) {
+        houses.push(icons.home)
+      }
+
+      return (
+        <div className='housePlaceholder'>
+          {hotel === 1 &&
+            <h6>
+              {icons.homes}
+            </h6>
+          }
+          {house > 0 && hotel !== 1 &&
+            <h6>
+              {houses}
+            </h6>
+          }
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+
+
   render() {
     const item = this.props.item;
     const players = this.props.players;
     const color = this.props.item.color;
-    const hotel = item.hotel;
-    const house = item.house;
-    const houses = [];
-    for (var i = 1; i <= house; i++) {
-      houses.push(icons.home)
-    }
 
     return (
       <div className="space property">
@@ -21,18 +45,7 @@ class Field extends Component {
           <div className="fieldName">
             {item.name}
           </div>
-          <div className='housePlaceholder'>
-            {hotel === 1 &&
-              <h6>
-                {icons.homes}
-              </h6>
-            }
-            {house > 0 && hotel !== 1 &&
-              <h6>
-                {houses}
-              </h6>
-            }
-          </div>
+          {this.housePlaceholder()}
           <div className='playerIconPlaceholder'>
             {!(typeof item.players == 'undefined') && (
               <div className='playerHeader' >
@@ -41,8 +54,8 @@ class Field extends Component {
                     {(pl.jail > 0) ? (
                       <div>{pl.jail}</div>
                     ) : (
-                      <div>&nbsp;</div>
-                    )}
+                        <div>&nbsp;</div>
+                      )}
 
                   </div>
                 )}
