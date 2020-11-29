@@ -458,9 +458,11 @@ class Board extends Component {
                                 <form onSubmit={this.handleMove}>
                                     <button className="btn btn-warning" >wykonaj ruch</button>
                                 </form>
+                                {(this.state.players.length > 0) && (
                                 <h6 className="text-center">
                                     tura gracza: {this.state.players[this.state.currplayer].name}
                                 </h6>
+                                )}
                             </div>
                             <div className="dices">
                                 <h5>Rzut&nbsp;kośćmi:</h5>
