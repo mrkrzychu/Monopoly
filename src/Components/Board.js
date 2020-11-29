@@ -28,6 +28,7 @@ class Board extends Component {
         this.handleCard = this.handleCard.bind(this);
         this.endTurn = this.endTurn.bind(this);
         this.newGame = this.newGame.bind(this);
+        this.computerMove = this.computerMove.bind(this);
         this.boardService = new BoardService();
 
     }
@@ -302,16 +303,16 @@ class Board extends Component {
     }
 
     endTurn() {
+        if (this.state.activePlayers === 1) {
+            this.setState({
+                popup: { action: "WINNER", playerName: this.state.players[this.state.currplayer].name }
+            });
+            return;
+        }
+
         var nextPlayer = (this.state.currplayer + 1) % this.state.players.length;
         while (this.state.players[nextPlayer].lost === 1) {
             nextPlayer = (nextPlayer + 1) % this.state.players.length;
-        }
-
-        if (this.state.activePlayers === 1) {
-            this.setState({
-                popup: { action: "WINNER", players: this.state.players, player: nextPlayer }
-            });
-            return;
         }
 
         var computer = this.state.players[nextPlayer].computer;
@@ -400,13 +401,26 @@ class Board extends Component {
             .then(response => response.json())
             .then(
                 (result) => {
+                    var activePlayers = 0;
+                    result.players.map((pl) => {
+                        if (pl.lost !== 1) {
+                            activePlayers++;
+                        }
+                    });
                     this.setState({
                         fields: result.fields,
                         players: result.players,
                         cards: result.cards,
-                        activePlayers: result.players.length,
+                        activePlayers: activePlayers,
                         isLoaded: true
                     });
+
+                    if (activePlayers === 1 && result.players.length > 1) {
+                        this.setState({
+                            popup: { action: "WINNER", playerName: this.state.players[this.state.currplayer].name }
+                        });
+                    }
+                    console.log(activePlayers)
                 },
                 (error) => {
                     this.setState({
@@ -454,16 +468,16 @@ class Board extends Component {
                                 <h2 className="label">Szansa</h2>
                                 <div className="deck"></div>
                             </div>
-                            <div className="moveButton">
-                                <form onSubmit={this.handleMove}>
-                                    <button className="btn btn-warning" >wykonaj ruch</button>
-                                </form>
-                                {(this.state.players.length > 0) && (
-                                <h6 className="text-center">
-                                    tura gracza: {this.state.players[this.state.currplayer].name}
-                                </h6>
-                                )}
-                            </div>
+                            {(this.state.players.length > 0) && (
+                                <div className="moveButton">
+                                    <form onSubmit={this.handleMove}>
+                                        <button className="btn btn-warning" >wykonaj ruch</button>
+                                    </form>
+                                    <h6 className="text-center">
+                                        tura gracza: {this.state.players[this.state.currplayer].name}
+                                    </h6>
+                                </div>
+                            )}
                             <div className="dices">
                                 <h5>Rzut&nbsp;kośćmi:</h5>
                                 <div key='dice1'><h3>{this.state.dices[0]}</h3></div>
@@ -514,6 +528,7 @@ class Board extends Component {
                         handleCard={this.handleCard}
                         newGame={this.newGame}
                     />
+                    <button onClick={this.computerMove}>Komputery</button>
                 </div>
             )
         }

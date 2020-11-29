@@ -191,13 +191,11 @@ class ResponsePopup extends Component {
                     </div>
                 )
             case 'WINNER':
-                var winner = popup.player
-
                 return (
                     <div className='popup'>
                         <div className='popupContent'>
                             <div>
-                                Wygrał gracz: {winner}
+                                Wygrał gracz: {popup.playerName}
                             </div>
                             <button className="btn btn-danger m-2" onClick={this.props.newGame} autoFocus >Nowa gra</button>
                         </div>

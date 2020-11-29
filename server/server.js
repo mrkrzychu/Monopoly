@@ -36,10 +36,12 @@ app.get('/getBoard', (req, res) => {
       let queryCard = db.query(sqlCard, (errC, cards) => {
         if (errC) throw errC;
         for (var pl of players) {
-          if (typeof fields[pl.position].players == 'undefined') {
-            fields[pl.position].players = [];
+          if (pl.lost !== 1) {
+            if (typeof fields[pl.position].players == 'undefined') {
+              fields[pl.position].players = [];
+            }
+            fields[pl.position].players.push(pl);
           }
-          fields[pl.position].players.push(pl);
         }
 
         var board = { "fields": fields, "players": players, "cards": cards };
