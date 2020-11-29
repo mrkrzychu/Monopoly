@@ -250,9 +250,9 @@ body {
 }
 
 .playerHeader>.playerIcon {
-	width: 20px;
-	height: 20px;
-	border-radius: 13px;
+	width: 19px;
+	height: 19px;
+	border-radius: 10px;
 	margin: 1px;
 	float: left;
 	color: white;
@@ -263,7 +263,7 @@ body {
 	top: 0;
 	left: 5%;
 	width: 90%;
-	height: 90%;
+	height: 100%;
 	content: "BANCRUPT";
 	background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M1 0 L0 1 L99 100 L100 99' fill='red' /><path d='M0 99 L99 0 L100 1 L1 100' fill='red' /></svg>");
 	background-repeat: no-repeat;

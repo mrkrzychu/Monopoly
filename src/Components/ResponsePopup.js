@@ -221,8 +221,7 @@ class ResponsePopup extends Component {
                     </div>
                 )
             case 'GOTOJAIL':
-                var name = field.name;
-
+                
                 return (
                     <div className='popup'>
                         <div className='popupContent'>

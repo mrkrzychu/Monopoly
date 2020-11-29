@@ -6,7 +6,8 @@ class Players extends Component {
 
         this.state = {
             playerName: "",
-            playerColor: this.getNewColor()
+            playerColor: this.getNewColor(),
+            computer: false
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -72,6 +73,7 @@ class Players extends Component {
                 <div className="col-2">
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group">
+                            
                             <input
                                 className="form-control"
                                 name="playerName"

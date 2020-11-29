@@ -122,6 +122,7 @@ class Board extends Component {
             if (typeof fields[neww].players == 'undefined') {
                 fields[neww].players = [];
             }
+            pl.jail = jail;
             fields[neww].players.push(pl);
 
             players[this.state.currplayer].position = neww;
@@ -205,7 +206,7 @@ class Board extends Component {
             if (card.goto >= 0) {
                 var curPosition = this.state.players[this.state.currplayer].position;
                 move = (card.goto - curPosition + 40) % 40;
-                if (card.goto == 10) {
+                if (card.goto === 10) {
                     jail = true;
                 }
             } else {
