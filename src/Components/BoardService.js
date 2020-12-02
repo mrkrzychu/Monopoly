@@ -8,6 +8,7 @@ export default class BoardService {
         this.BALANCE_URL = "http://localhost:3000/balance";
         this.NEWGAME_URL = "http://localhost:3000/newgame";
         this.BANCRUPT_URL = "http://localhost:3000/bancrupt";
+        this.ENDTURN_URL = "http://localhost:3000/endturn";
     }
 
     async move(player, value, jail) {
@@ -45,6 +46,11 @@ export default class BoardService {
         return this.fetchRequest(params, this.NEWGAME_URL);
     }
 
+    async endTurn(player) {
+        var params = { player };
+        return this.fetchRequest(params, this.ENDTURN_URL);
+    }
+
     async bancrupt(player) {
         var params = { player };
         return this.fetchRequest(params, this.BANCRUPT_URL);
@@ -61,7 +67,6 @@ export default class BoardService {
         })
             .then((response) => {
                 if (!response.ok) {
-                    console.log(response);
                     throw new Error("HTTP error, status = " + response.status);
                 }
                 return response.json();

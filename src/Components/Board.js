@@ -131,6 +131,7 @@ class Board extends Component {
             players[this.state.currplayer].position = neww;
 
             this.updateFieldsPlayersState(fields, players);
+
             if (typeof res.todo != 'undefined') {
                 if (res.todo.action === 'CARD') {
                     var cards = this.state.cards;
@@ -206,6 +207,11 @@ class Board extends Component {
 
 
     handleNewPlayer(name, color, computer) {
+        if (computer) {
+            computer = 1;
+        } else {
+            computer = 0;
+        }
         this.boardService.newPlayer(name, color, computer).then((res) => {
             var players = this.state.players;
             var fields = this.state.fields;
@@ -302,11 +308,23 @@ class Board extends Component {
         this.endTurn();
     }
 
+    isWinner() {
+        if (this.state.activePlayers === 1 && this.state.players.length > 1) {
+            var players = this.state.players;
+            for (var i = 0; i < players.length; i++) {
+                if (players[i].lost !== 1) {
+                    this.setState({
+                        popup: { action: "WINNER", playerName: players[i].name }
+                    });
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     endTurn() {
-        if (this.state.activePlayers === 1) {
-            this.setState({
-                popup: { action: "WINNER", playerName: this.state.players[this.state.currplayer].name }
-            });
+        if (this.isWinner()) {
             return;
         }
 
@@ -315,19 +333,21 @@ class Board extends Component {
             nextPlayer = (nextPlayer + 1) % this.state.players.length;
         }
 
-        var computer = this.state.players[nextPlayer].computer;
+        this.boardService.endTurn(nextPlayer).then((res) => {
+            var computer = this.state.players[nextPlayer].computer;
 
-        if (computer) {
-            this.setState({
-                popup: {},
-                currplayer: nextPlayer
-            }, this.computerMove);
-        } else {
-            this.setState({
-                popup: {},
-                currplayer: nextPlayer
-            });
-        }
+            if (computer) {
+                this.setState({
+                    popup: {},
+                    currplayer: nextPlayer
+                }, this.computerMove);
+            } else {
+                this.setState({
+                    popup: {},
+                    currplayer: nextPlayer
+                });
+            }
+        });
 
     }
 
@@ -411,16 +431,12 @@ class Board extends Component {
                         fields: result.fields,
                         players: result.players,
                         cards: result.cards,
+                        currplayer: result.currPlayer,
                         activePlayers: activePlayers,
                         isLoaded: true
                     });
 
-                    if (activePlayers === 1 && result.players.length > 1) {
-                        this.setState({
-                            popup: { action: "WINNER", playerName: this.state.players[this.state.currplayer].name }
-                        });
-                    }
-                    console.log(activePlayers)
+                    this.isWinner();
                 },
                 (error) => {
                     this.setState({
@@ -471,10 +487,10 @@ class Board extends Component {
                             {(this.state.players.length > 0) && (
                                 <div className="moveButton">
                                     <form onSubmit={this.handleMove}>
-                                        <button className="btn btn-warning" >wykonaj ruch</button>
+                                        <button className="btn btn-warning" >RZUĆ KOŚĆMI</button>
                                     </form>
                                     <h6 className="text-center">
-                                        tura gracza: {this.state.players[this.state.currplayer].name}
+                                        tura : {this.state.players[this.state.currplayer].name}
                                     </h6>
                                 </div>
                             )}
@@ -528,7 +544,6 @@ class Board extends Component {
                         handleCard={this.handleCard}
                         newGame={this.newGame}
                     />
-                    <button onClick={this.computerMove}>Komputery</button>
                 </div>
             )
         }

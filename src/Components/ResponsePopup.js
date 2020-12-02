@@ -16,8 +16,6 @@ class ResponsePopup extends Component {
     handleChangeBuildSelect(event) {
         const target = event.target;
         const value = Number(target.value);
-        console.log(value)
-        console.log(target.options)
         const price = Number(target.options[value - 1 - (5 - target.options.length)].getAttribute('price'));
 
         this.setState({

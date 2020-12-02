@@ -1,0 +1,38 @@
+SZANSY:
+1.Id¿ na ulice p³owieck¹ jeœli przejdziesz przez START pobierz M 200
+2.IdŸ na Dworzec Zachodni. Jeœli przejdziesz przez START pobierz M 200
+3.Zrobi³eœ b³¹d w kalkulacjach podatkowych. Zap³aæ ka¿demu graczowi M 50
+4.IdŸ na najbli¿szy Dworzec kolejowy. Jeœli nie jest zajêty mo¿esz go kupiæ od banku. Jeœli jest ju¿ zajêty rzuæ kostk¹ jeszcze raz i zap³aæ w³aœcicielowi odpowiedni¹ sumê.
+5.IdŸ na najbli¿szy Dworzec kolejowy. Jeœli nie jest zajêty mo¿esz go kupiæ od banku. Jeœli jest ju¿ zajêty rzuæ kostk¹ jeszcze raz i zap³aæ w³aœcicielowi odpowiedni¹ sumê.
+6.IdŸ do Elektrowni.Jeœli nie jest zajêta mo¿esz j¹ kupiæ od banku. Jeœli jest ju¿ zajêta rzuæ kostk¹ jeszcze raz i zap³aæ w³aœcicielowi odpowiedni¹ sumê.
+7.PrzeprowadŸ remont generalny wszystkich swoich nieruchomoœci: Zap³aæ za ka¿dy dom M 25
+Zap³aæ za ka¿dy hotel M 100
+8.IdŸ do wiêzienia. Nie przechodŸ przez START. Nie pobieraj M 200
+9.WyjdŸ bezp³atnie z wiêzienia. (Tê kartê mo¿esz zatrzymaæ do póŸniejszego wykorzystania lub sprzeda¿y)
+10.IdŸ na Plac Wilson. Jeœli przejdziesz przez START pobierz M 200
+11.Bank wyp³aca Ci dywidwndê. Pobierz M 50
+12.Zwrot podatku.Pobierz M 150
+13.PrzejdŸ na START. (Pobierz M 200)
+14.Zap³aæ grzywne- M 15
+15.Cofnij siê o trzy pola.
+16. IdŸ na Aleje Ujazdowskie
+
+KASY SPO£ECZNE:
+1.Wymieniasz elektrykê w swoich nieruchomoœciach. Zap³aæ: M 40 za ka¿dy dom M 115 za ka¿dy hotel
+2.Zaj¹³eœ 2 miejsce w konkursie piêknoœci. Pobierz M 10
+3.B³¹d bankowy na twoim koncie! Pobierz M 200
+4.WyjdŸ bezp³atnie z wiêzienia. (Tê kartê mo¿esz zatrzymaæ do póŸniejszego wykorzystania lub sprzeda¿y)
+5.IdŸ do wiêzienia. Nie przechodŸ przez START. Nie pobieraj M 200
+6.Masz urodziny! Pobierz M 10 od ka¿dego gracza.
+7.Fundusz Zdrowotny. Pobierz M 100
+8.Zap³aæ za wizytê u dentysty- M 100
+9.Zap³aæ czesne-M 50
+10.PrzejdŸ na START ( PObierz M 200)
+11.Wyprzeda¿! Pobierz M 50
+12.Zap³aæ za wizytê Lekarsk¹-M 50
+13.Zwrot podatku. Pobierz M 20
+14.Otrzymujesz M 25 za porady finansowe
+15.Odziedziczy³eœ spadek. Pobierz M 100
+16.Dosta³eœ premiê! Pobierz M 100
+
+columny id, text, balance,goto,balanceeach

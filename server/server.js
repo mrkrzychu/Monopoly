@@ -35,19 +35,21 @@ app.get('/getBoard', (req, res) => {
       let sqlCard = 'SELECT * FROM card';
       let queryCard = db.query(sqlCard, (errC, cards) => {
         if (errC) throw errC;
-        for (var pl of players) {
-          if (pl.lost !== 1) {
-            if (typeof fields[pl.position].players == 'undefined') {
-              fields[pl.position].players = [];
+        let sqlState = 'SELECT currPlayer FROM state';
+        let queryState = db.query(sqlState, (errS, state) => {
+          if (errS) throw errS;
+          for (var pl of players) {
+            if (pl.lost !== 1) {
+              if (typeof fields[pl.position].players == 'undefined') {
+                fields[pl.position].players = [];
+              }
+              fields[pl.position].players.push(pl);
             }
-            fields[pl.position].players.push(pl);
           }
-        }
+          var board = { "fields": fields, "players": players, "cards": cards, "currPlayer": state[0].currPlayer };
 
-        var board = { "fields": fields, "players": players, "cards": cards };
-        console.log(board)
-
-        res.send(board);
+          res.send(board);
+        });
       });
     });
   });
@@ -62,15 +64,18 @@ app.post('/newGame', (req, res) => {
     let sqlBoard = 'update board set owner = NULL, house = NULL, hotel = NULL';
     let queryBoard = db.query(sqlBoard, (errB, resultsBoard) => {
       if (errB) throw errB;
+      let sqlState = 'update state set currPlayer = 0';
+      let queryState = db.query(sqlState, (errS, resultsState) => {
+        if (errS) throw errS;
 
-      res.send({});
-    });
+        res.send({});
+      });
+    })
   });
 });
 
 
 app.post('/bancrupt', (req, res) => {
-  // res.send({});
   const params = req.body;
   const player = params.player;
 
@@ -83,6 +88,18 @@ app.post('/bancrupt', (req, res) => {
       if (errB) throw errB;
 
     });
+  });
+});
+
+app.post('/endturn', (req, res) => {
+  const params = req.body;
+  const player = params.player;
+
+  let sqlPlayer = 'update state set currPlayer = ' + player;
+  let queryPlayer = db.query(sqlPlayer, (errP, resultsPlayer) => {
+    if (errP) throw errP;
+
+    res.send({});
   });
 });
 
@@ -170,6 +187,7 @@ app.post('/move', (req, res) => {
     let sql = 'UPDATE player SET position = ' + newPosition + ' ,cash = ' + newCash + ' , jail = ' + jail + ' WHERE id = ' + player;
     let query = db.query(sql, (err, result) => {
       if (err) throw err;
+
 
       let sqlField = 'select * from board where id = ' + newPosition;
       let query = db.query(sqlField, (err, fields) => {
