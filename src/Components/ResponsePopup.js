@@ -95,8 +95,8 @@ class ResponsePopup extends Component {
                     <div className='popup'>
                         <div className='popupContent'>
                             <p>Czy chcesz kupić {field.name} za {field.price} zł?</p>
-                            <button onClick={this.props.handleBuy} autoFocus>Tak, kupuję</button>
-                            <button onClick={this.props.endTurn}>Nie, rezygnuję</button>
+                            <button className = 'btn btn-primary' onClick={this.props.handleBuy} autoFocus>Tak, kupuję</button>
+                            <button className = 'btn btn-danger ml-1' onClick={this.props.endTurn}>Nie, rezygnuję</button>
                         </div>
                     </div>
                 )
@@ -127,7 +127,7 @@ class ResponsePopup extends Component {
                         <div className='popupContent'>
                             <p>{field.name}</p>
                             <p>Płacisz czynsz w wysokości {payment}zł dla gracza {field.owner}</p>
-                            <button onClick={this.props.handlePay} autoFocus >ok</button>
+                            <button className = 'btn btn-warning' onClick={this.props.handlePay} autoFocus >ok</button>
                         </div>
                     </div>
                 )
@@ -165,9 +165,9 @@ class ResponsePopup extends Component {
                                         </option>
                                     )}
                                 </select>
-                                <button autoFocus >ok</button>
+                                <button className = 'btn btn-primary ml-2' autoFocus >ok</button>
                             </form>
-                            <button onClick={this.props.endTurn}>Nie, rezygnuję</button>
+                            <button className = 'btn btn-danger' onClick={this.props.endTurn}>Nie, rezygnuję</button>
                         </div>
                     </div>
                 )
@@ -184,7 +184,7 @@ class ResponsePopup extends Component {
                             <div>
                                 {card.text}
                             </div>
-                            <button onClick={this.props.handleCard} autoFocus >ok</button>
+                            <button className = 'btn btn-warning' onClick={this.props.handleCard} autoFocus >ok</button>
                         </div>
                     </div>
                 )
@@ -212,7 +212,7 @@ class ResponsePopup extends Component {
                             <div>
                                 Płacisz {" " + price + " "} zł
                             </div>
-                            <button onClick={this.props.endTurn} autoFocus >ok</button>
+                            <button className = 'btn btn-warning' onClick={this.props.endTurn} autoFocus >ok</button>
                         </div>
                     </div>
                 )
@@ -227,7 +227,7 @@ class ResponsePopup extends Component {
                             <div>
                                 Przechodząc przez START nie pobierasz 200zł
                             </div>
-                            <button onClick={this.props.endTurn} autoFocus >ok</button>
+                            <button className = 'btn btn-warning' onClick={this.props.endTurn} autoFocus >ok</button>
                         </div>
                     </div>
                 )
