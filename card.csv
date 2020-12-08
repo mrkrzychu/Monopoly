@@ -1,0 +1,29 @@
+"id","name","text","goto","balance","balanceEach"
+"0","szansa","Idż na ulice płowiecką jeśli przejdziesz przez START pobierz 200zł","11",NULL,NULL
+"1","szansa","Idź na Dworzec Zachodni. Jeśli przejdziesz przez START pobierz 200zł","5",NULL,NULL
+"2","szansa","Zrobiłeś błąd w kalkulacjach podatkowych. Zapłać każdemu graczowi 50zł",NULL,NULL,"-50"
+"3","szansa","Idź na  Dworzec Centralny. Jeśli nie jest zajęty możesz go kupić od banku. Jeśli jest już zajęty zapłać właścicielowi odpowiednią sumę.","35",NULL,NULL
+"4","szansa","Idź na  Dworzec Wchodni. Jeśli nie jest zajęty możesz go kupić od banku. Jeśli jest już zajęty zapłać właścicielowi odpowiednią sumę.","25",NULL,NULL
+"5","szansa","Idź do Elektrowni. Jeśli nie jest zajęta możesz ją kupić od banku.","12",NULL,NULL
+"6","szansa","Idź do więzienia. Nie przechodź przez START. Nie pobieraj 200zł","10",NULL,NULL
+"7","szansa","Idź na Plac Wilson. Jeśli przejdziesz przez START pobierz  200zł","24",NULL,NULL
+"8","szansa","Bank wypłaca Ci dywidwndę. Pobierz 50zł",NULL,"50",NULL
+"9","szansa","Zwrot podatku. Pobierz  150zł",NULL,"150",NULL
+"10","szansa","Przejdź na START. Pobierz 200zł","0",NULL,NULL
+"11","szansa","Zapłać grzywne w wysokości 15zł",NULL,"-15",NULL
+"12","szansa","Cofnij się o trzy pola.","-3",NULL,NULL
+"13","szansa","Idź na Aleje Ujazdowskie.","39",NULL,NULL
+"14","kasa","Zająłeś 2 miejsce w konkursie piękności. Pobierz 10zł",NULL,"10",NULL
+"15","kasa","Błąd bankowy na twoim koncie! Pobierz 200zł",NULL,"200",NULL
+"16","kasa","Idź do więzienia. Nie przechodź przez START. Nie pobieraj 200zł","10",NULL,NULL
+"17","kasa","Masz urodziny! Pobierz 10zł od każdego gracza.",NULL,NULL,"10"
+"18","kasa","Fundusz Zdrowotny. Pobierz 100zł",NULL,"100",NULL
+"19","kasa","Zapłać za wizytę u dentysty 100zł",NULL,"-100",NULL
+"20","kasa","Zapłać czesne 50zł",NULL,"-50",NULL
+"21","kasa","Przejdź na START ( Pobierz 200zł)","0",NULL,NULL
+"22","kasa","Wyprzedaż! Pobierz 50zł",NULL,"50",NULL
+"23","kasa","Zapłać za wizytę Lekarską 50zł",NULL,"-50",NULL
+"24","kasa","Zwrot podatku. Pobierz 20zł",NULL,"20",NULL
+"25","kasa","Otrzymujesz 25zł za porady finansowe",NULL,"25",NULL
+"26","kasa","Odziedziczyłeś spadek. Pobierz 100zł",NULL,"100",NULL
+"27","kasa","Dostałeś premię! Pobierz 100zł",NULL,"100",NULL

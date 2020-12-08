@@ -153,13 +153,6 @@ app.post('/move', (req, res) => {
     var newCash = resultsPlayer[0].cash;
     var jail = resultsPlayer[0].jail;
 
-    ////////////////////////////////////////
-    // zawsze wskakuje na pole
-    if (player == 0) {
-      //  newPosition = 30;
-    }
-    ////////////////////////////////////////
-
     if (newPosition < curPosition && !gotoJail) {
       newCash += 200;
     }

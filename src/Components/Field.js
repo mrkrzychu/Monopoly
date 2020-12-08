@@ -32,7 +32,6 @@ class Field extends Component {
     }
   }
 
-
   render() {
     const item = this.props.item;
     const players = this.props.players;
@@ -56,7 +55,6 @@ class Field extends Component {
                     ) : (
                         <div>&nbsp;</div>
                       )}
-
                   </div>
                 )}
               </div>
@@ -75,7 +73,10 @@ class Field extends Component {
           <div>
             {(typeof item.owner == 'number') ? (
               <div>
-                <div className='owner' key={item.owner} style={{ backgroundColor: players[item.owner].color_player, color: '#FFFFFF' }}>
+                <div
+                className='owner'
+                key={item.owner}
+                style={{ backgroundColor: players[item.owner].color_player, color: '#FFFFFF' }}>
                   {players[item.owner].name}
                 </div>
               </div>
